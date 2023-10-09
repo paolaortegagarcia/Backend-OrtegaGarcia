@@ -33,7 +33,22 @@ a {
   text-decoration: none;
 }
 
-.consigna {
+.consola {
   margin-left: 10px;
   font-style: italic;
+  color: #41f5e9;
+}
+
+.consigna {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 10px;
+  margin-right: 10px;
+
+}
+
+.consigna-img {
+  width: calc(50% - 10px);
+  max-width: 100%;
 }
