@@ -179,11 +179,11 @@ class ProductManager {
 async function test() {
 
   // Creando una instancia
-  const productManager = new ProductManager();
+  //const productManager = new ProductManager();
 
-  // traer productos
-  const productList = await productManager.getProducts();
-  //console.log(productList); // lista de productos
+  // traer productos (cantidad = 0 y array vacio)
+  //const productList = await productManager.getProducts();
+  //console.log(productList); // array vacio
 
   // agregar producto
   //await productManager.addProduct("producto prueba", "este es un producto prueba", 200,"sin imagen", "abc123", 25 ); 
