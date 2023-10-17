@@ -182,7 +182,7 @@ async function test() {
   const productManager = new ProductManager();
 
   // traer productos
-  //const productList = await productManager.getProducts();
+  const productList = await productManager.getProducts();
   //console.log(productList); // lista de productos
 
   // agregar producto
@@ -195,7 +195,7 @@ async function test() {
   //await productManager.updateProduct(1, {description: "hago un cambio"});
 
   // Eliminar producto
-  await productManager.deleteProduct(1);
+  //await productManager.deleteProduct(1);
 
 }
 
