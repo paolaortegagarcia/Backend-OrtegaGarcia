@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 export class ProductManager {
   constructor(path) {
@@ -125,6 +125,17 @@ export class ProductManager {
       console.error("Error al eliminar el producto:", error);
     }
   }
+
+
+  async getProductsByLimit(limit){
+    try {
+        const products = await this.getFile();
+        if(!limit || limit >= products.length) return products;
+        else return products.slice(0, limit);
+    } catch (error) {
+        console.log(error);
+    }
+  }
   
 /* ------------------------------- ARCHIVO JSON ------------------------------ */
 
@@ -172,3 +183,4 @@ export class ProductManager {
   
 
 }
+
