@@ -1,5 +1,5 @@
 import fs from "fs";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
 
 export class ProductManager {
   constructor(path) {
@@ -13,7 +13,7 @@ export class ProductManager {
   async createProduct(obj) {
     try {
       const product = {
-        id: uuid(),
+        id: uuidv4(),
         status: "true",
         ...obj
       };

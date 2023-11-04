@@ -1,5 +1,6 @@
 import fs from "fs";
-import { uuid } from "uuidv4";
+import { v4 as uuidv4 } from "uuid";
+
 
 export class CartManager {
   constructor(path) {
@@ -13,7 +14,7 @@ export class CartManager {
   async createCart() {
     try {
       const cart = {
-        id: uuid(),
+        id: uuidv4(),
         products: []
       };
   
@@ -124,7 +125,7 @@ export class CartManager {
     try {
       if (fs.existsSync(this.path)) {
         const existingCarts = await this.getFile();
-        existingCarts.push(...products);
+        existingCarts.push(...carts);
         await fs.promises.writeFile(this.path, JSON.stringify(existingCarts));
       } else {
         await fs.promises.writeFile(this.path, JSON.stringify( carts));

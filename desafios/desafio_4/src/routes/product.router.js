@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 /* ---------------------------------- Traer productos con ID --------------------------------- */
 router.get('/:productId', async (req, res) => {
   try {
-    const productId = parseInt(req.params.productId);
+    const productId = req.params.productId;
     const product = await productManager.getProductsById(productId);
 
     if (!product) {
@@ -55,7 +55,7 @@ router.post("/", productValidator, async (req, res) => {
 router.put("/:productId", async (req, res) => {
   try {
     const updatedProduct = { ...req.body};
-    const productId = parseInt(req.params.productId);
+    const productId = req.params.productId;
     const productExists = await productManager.getProductsById(productId);
     if (!productExists) {
       return res.status(404).json({ error: 'Product not found' });
@@ -72,7 +72,7 @@ router.put("/:productId", async (req, res) => {
 
 router.delete("/:productId", async (req, res) =>{
   try {
-    const productId = parseInt(req.params.productId);
+    const productId = req.params.productId;
     await productManager.deleteProduct(productId);
     res.status(200).json({ msg: `Product with the ID: ${productId} has been deleted` });
   } catch (error) {
