@@ -1,14 +1,23 @@
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Price</th>
-  </tr>
-  {{#each products}}
-  <tr>
-    <td>{{ this.name }}</td>
-    <td>{{ this.description }}</td>
-    <td>${{ this.price }}</td>
-  </tr>
-  {{/each}}
-</table>
+<div class="products-heading">
+  <h3>Productos Disponibles</h3>
+</div>
+
+<div class="container-products">
+
+  <div class="table-home">
+    <table>
+      <tr>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+      </tr>
+      {{#each products}}
+      <tr>
+        <td>{{ this.name }}</td>
+        <td>{{ this.description }}</td>
+        <td>${{ this.price }}</td>
+      </tr>
+      {{/each}}
+    </table>
+  </div>
+</div>

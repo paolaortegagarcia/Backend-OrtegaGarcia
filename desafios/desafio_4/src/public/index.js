@@ -24,10 +24,13 @@ form.onsubmit = (e) => {
 
 
 socketClient.on('arrayProducts', (productsArray) => {
-  let infoProducts = '';
+  let infoProducts = '<table><tr><th>Name</th><th>Description</th><th>Price</th></tr>';
+
   productsArray.forEach(p => {
-    infoProducts += `${p.name} - ${p.description} - $${p.price} </br>`;
+    infoProducts += `<tr><td>${p.name}</td><td>${p.description}</td><td>$${p.price}</td></tr>`;
   });
+  
+  infoProducts += '</table>';
   products.innerHTML = infoProducts;
 });
 
