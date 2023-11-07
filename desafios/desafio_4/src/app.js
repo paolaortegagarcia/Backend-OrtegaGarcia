@@ -34,8 +34,6 @@ const httpServer = app.listen(PORT, ()=> console.log(`🚀 Server is running on 
 const socketServer = new Server(httpServer);
 
 
-// Resto del código...
-
 socketServer.on("connection", (socket) => {
   console.log(`🟢 Usuario Conectado ${socket.id}`);
 
