@@ -1,0 +1,41 @@
+<div class="split-left">
+
+  <h3>Agregar Productos</h3>
+
+  <div class="container-form">
+
+    <form id="form">
+
+      <label for="name">Nombre</label>
+      <input type="text" name="name" id="name" required>
+
+      <label for="description">Descripción</label>
+      <input type="text" name="description" id="description" required>
+
+      <label for="price">Precio</label>
+      <input type="number" name="price" id="price" required>
+
+      <input type="submit" value="SEND">
+    </form>
+
+  </div>
+
+
+</div>
+
+
+<div class="split-right">
+
+  <h3>Lista de Productos</h3>
+
+  <p id="products">
+
+
+  </p>
+
+</div>
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="index.js"></script>
