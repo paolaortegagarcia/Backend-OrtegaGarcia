@@ -1,6 +1,7 @@
 import express from "express";
 import { __dirname } from "./utils.js";
 import productRouter from "./routes/product.router.js";
+import cartRouter from "./routes/cart.router.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
@@ -16,6 +17,7 @@ app.use(express.static(__dirname + "/public"));
 /* --------------------------------- Routers -------------------------------- */
 
 app.use("/api/products", productRouter);
+app.use("/api/carts", cartRouter);
 
 /* ---------------------------------- Error Handler--------------------------------- */
 
@@ -36,7 +38,7 @@ const httpServer = app.listen(PORT, () =>
 
 /* ------------------------------- Persistence ------------------------------ */
 
-const persistence = "MONGO";
+const persistence = "";
 
 if (persistence === "MONGO") await initMongoDB();
 
