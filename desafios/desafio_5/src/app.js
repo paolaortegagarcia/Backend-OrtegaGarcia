@@ -2,10 +2,12 @@ import express from "express";
 import { __dirname } from "./utils.js";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
+import viewRouter from "./routes/view.router.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { initMongoDB } from "./dao/mongodb/connection.js";
+import { ProductDaoFS } from "./dao/filesystem/product.dao.js";
 
 /* --------------------------------- Express -------------------------------- */
 
@@ -18,6 +20,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
+app.use("/", viewRouter);
 
 /* ---------------------------------- Error Handler--------------------------------- */
 
@@ -38,13 +41,17 @@ const httpServer = app.listen(PORT, () =>
 
 /* ------------------------------- Persistence ------------------------------ */
 
-const persistence = "";
+const persistence = "MONGO";
 
 if (persistence === "MONGO") await initMongoDB();
 
+const productDaoFS = new ProductDaoFS(
+    __dirname + "/dao/filesystem/db/products.json"
+);
+
 /* -------------------------------- WebSocket ------------------------------- */
 
-const socketServer = new Server(httpServer);
+export const socketServer = new Server(httpServer);
 
 socketServer.on("connection", (socket) => {
     console.log(`🟢 Usuario Conectado ${socket.id}`);
@@ -55,9 +62,10 @@ socketServer.on("connection", (socket) => {
 
     socket.on("newProduct", async (product) => {
         try {
-            const productManager = new ProductManager("./src/db/products.json");
-            await productManager.createProduct(product);
-            const products = await productManager.getProducts();
+            const newProduct = await productDaoFS.createProduct(product);
+            socketServer.emit("productAdded", newProduct);
+
+            const products = await productDaoFS.getProducts();
             socketServer.emit("arrayProducts", products);
         } catch (error) {
             console.error("Error adding product:", error);
