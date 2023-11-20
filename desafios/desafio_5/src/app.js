@@ -7,7 +7,7 @@ import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { initMongoDB } from "./dao/mongodb/connection.js";
-import { ProductDaoFS } from "./dao/filesystem/product.dao.js";
+import * as productServices from "./services/product.services.js";
 
 /* --------------------------------- Express -------------------------------- */
 
@@ -45,10 +45,6 @@ const persistence = "MONGO";
 
 if (persistence === "MONGO") await initMongoDB();
 
-const productDaoFS = new ProductDaoFS(
-    __dirname + "/dao/filesystem/db/products.json"
-);
-
 /* -------------------------------- WebSocket ------------------------------- */
 
 export const socketServer = new Server(httpServer);
@@ -62,10 +58,10 @@ socketServer.on("connection", (socket) => {
 
     socket.on("newProduct", async (product) => {
         try {
-            const newProduct = await productDaoFS.createProduct(product);
+            const newProduct = await productServices.createProduct(product);
             socketServer.emit("productAdded", newProduct);
 
-            const products = await productDaoFS.getProducts();
+            const products = await productServices.getProducts();
             socketServer.emit("arrayProducts", products);
         } catch (error) {
             console.error("Error adding product:", error);
