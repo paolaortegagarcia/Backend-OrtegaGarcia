@@ -1,13 +1,13 @@
 /* --------------------------------- MongoDB -------------------------------- */
-// import { ProductDaoMongoDB } from "../dao/mongodb/product.dao.js";
-// const prodDao = new ProductDaoMongoDB();
+import { ProductDaoMongoDB } from "../dao/mongodb/product.dao.js";
+const prodDao = new ProductDaoMongoDB();
 
 /* --------------------------------- FileSystem -------------------------------- */
-import { ProductDaoFS } from "../dao/filesystem/product.dao.js";
-import { __dirname } from "../utils.js";
-const prodDao = new ProductDaoFS(
-    __dirname + "/dao/filesystem/db/products.json"
-);
+// import { ProductDaoFS } from "../dao/filesystem/product.dao.js";
+// import { __dirname } from "../utils.js";
+// const prodDao = new ProductDaoFS(
+//     __dirname + "/dao/filesystem/db/products.json"
+// );
 
 /* ------------------------------------ - ----------------------------------- */
 

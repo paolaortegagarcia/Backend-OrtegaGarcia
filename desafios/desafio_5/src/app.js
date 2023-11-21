@@ -62,6 +62,7 @@ socketServer.on("connection", (socket) => {
             socketServer.emit("productAdded", newProduct);
 
             const products = await productServices.getProducts();
+            console.log("Products sent over WebSocket:", products);
             socketServer.emit("arrayProducts", products);
         } catch (error) {
             console.error("Error adding product:", error);
