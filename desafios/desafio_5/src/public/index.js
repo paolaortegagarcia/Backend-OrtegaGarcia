@@ -1,6 +1,6 @@
 const socketClient = io();
 
-/* ---------------------------------- RealTimeProducts ---------------------------------- */
+/* ---------------------------------- RealTimeProducts Form ---------------------------------- */
 
 const form = document.getElementById("form");
 const inputName = document.getElementById("title");
@@ -14,14 +14,14 @@ const products = document.getElementById("products");
 
 form.onsubmit = (e) => {
     e.preventDefault();
-    const name = inputName.value;
+    const title = inputName.value;
     const description = inputDescription.value;
     const code = inputCode.value;
     const price = inputPrice.value;
     const stock = inputStock.value;
     const category = inputCategory.value;
 
-    const product = { name, description, price, code, stock, category };
+    const product = { title, description, price, code, stock, category };
     socketClient.emit("newProduct", product);
 
     inputName.value = "";
@@ -32,14 +32,14 @@ form.onsubmit = (e) => {
     inputCategory.value = "";
 };
 
-/* ---------------------------------- Home ---------------------------------- */
+/* ---------------------------------- RealTimeProducts Products ---------------------------------- */
 
-socketClient.on("arrayProducts", (productsArray) => {
+socketClient.on("arrayProducts", (arrayProducts) => {
     let infoProducts =
         "<table><tr><th>Name</th><th>Description</th><th>Price</th></tr>";
 
-    productsArray.forEach((p) => {
-        infoProducts += `<tr><td>${p.name}</td><td>${p.description}</td><td>$${p.price}</td></tr>`;
+    arrayProducts.forEach((p) => {
+        infoProducts += `<tr><td>${p.title}</td><td>${p.description}</td><td>$${p.price}</td></tr>`;
     });
 
     infoProducts += "</table>";
