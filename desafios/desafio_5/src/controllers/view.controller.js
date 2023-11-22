@@ -3,7 +3,7 @@ import * as service from "../services/product.services.js";
 export const renderHome = async (req, res, next) => {
     try {
         const products = await service.getProducts();
-        console.log(products[0].description); //prueba de que si lee el producto
+        console.log(products);
         res.render("home", { products });
     } catch (error) {
         next(error.message);

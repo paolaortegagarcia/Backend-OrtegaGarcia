@@ -5,6 +5,7 @@
 <div class="container-products">
 
     <div class="table-home">
+        console.log({{products}});
         <table>
             <tr>
                 <th>Nombre</th>
@@ -13,15 +14,11 @@
             </tr>
             {{#each products}}
                 <tr>
-                    <td>{{title}}</td>
-                    <td>{{description}}</td>
-                    <td>${{price}}</td>
+                    <td>{{this.title}}</td>
+                    <td>{{this.description}}</td>
+                    <td>${{this.price}}</td>
                 </tr>
             {{/each}}
         </table>
     </div>
 </div>
-
-<script>
-    console.log({{products}});
-</script>
