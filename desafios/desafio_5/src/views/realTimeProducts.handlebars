@@ -1,60 +1,66 @@
-<div class="split-left">
-  <h3>Agregar Productos</h3>
+<div id="realTime-container">
+    <div class="split-left">
+        <h3>Agregar Productos</h3>
 
-  <div class="container-form">
+        <div class="container-form">
 
-    <form id="form">
+            <form id="form">
 
-      <div class="form-group">
-        <label for="title">Nombre</label>
-        <input type="text" name="title" id="title" required>
-      </div>
+                <div class="form-group">
+                    <label for="title">Nombre</label>
+                    <input type="text" name="title" id="title" required />
+                </div>
 
-      <div class="form-group">
-        <label for="description">Descripción</label>
-        <input type="text" name="description" id="description" required>
-      </div>
+                <div class="form-group">
+                    <label for="description">Descripción</label>
+                    <input
+                        type="text"
+                        name="description"
+                        id="description"
+                        required
+                    />
+                </div>
 
-      <div class="form-group">
-        <label for="price">Precio</label>
-        <input type="number" name="price" id="price" required>
-      </div>
+                <div class="form-group">
+                    <label for="price">Precio</label>
+                    <input type="number" name="price" id="price" required />
+                </div>
 
-      <div class="form-group">
-        <label for="code">Código</label>
-        <input type="text" name="code" id="code" required>
-      </div>
+                <div class="form-group">
+                    <label for="code">Código</label>
+                    <input type="text" name="code" id="code" required />
+                </div>
 
-      <div class="form-group">
-        <label for="stock">Stock</label>
-        <input type="text" name="stock" id="stock" required>
-      </div>
+                <div class="form-group">
+                    <label for="stock">Stock</label>
+                    <input type="text" name="stock" id="stock" required />
+                </div>
 
-      <div class="form-group">
-        <label for="category">Categoría</label>
-        <input type="text" name="category" id="category" required>
-      </div>
+                <div class="form-group">
+                    <label for="category">Categoría</label>
+                    <input type="text" name="category" id="category" required />
+                </div>
 
-      <input type="submit" value="SEND">
+                <input type="submit" value="SEND" />
 
-    </form>
+            </form>
 
-  </div>
+        </div>
+    </div>
+
+    <div class="split-right">
+
+        <h3>Lista de Productos</h3>
+
+        <div id="products">
+
+            <div />
+
+        </div>
+
+    </div>
+
 </div>
-
-
-<div class="split-right">
-
-  <h3>Lista de Productos</h3>
-
-  <div id="products">
-
-
-  <div/>
-
-</div>
-
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="index.js"></script>
