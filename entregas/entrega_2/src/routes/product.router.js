@@ -4,11 +4,19 @@ import * as controller from "../controllers/product.controller.js";
 
 const router = Router();
 
+/* --------------------------------- Bulk -------------------------------- */
+
 //router.post("/bulk", controller.bulkProducts);
+
+/* ---------------------------------- Pipeline ---------------------------------- */
+
+router.get("/pipeline", controller.aggregationCategory);
+
+/* ---------------------------------- Get All ---------------------------------- */
 
 router.get("/all", controller.getProducts);
 
-/* --------------------------------- Queries -------------------------------- */
+/* ---------------------------------- Queries ---------------------------------- */
 
 router.get("/", controller.getProductByCategory);
 

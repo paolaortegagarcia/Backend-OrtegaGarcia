@@ -11,16 +11,36 @@ import * as service from "../services/product.service.js";
 //     }
 // };
 
+/* -------------------------------- Pipeline -------------------------------- */
+export const aggregationCategory = async (req, res, next) => {
+    try {
+        const { category } = req.query;
+        if (category === undefined) {
+            const products = await service.getProducts();
+            return res.json(products);
+        } else {
+            const response = await service.aggregationCategory(category);
+            res.json(response);
+        }
+    } catch (error) {
+        next(error.message);
+    }
+};
+
 /* --------------------------------- Queries -------------------------------- */
 
 export const getProductByCategory = async (req, res, next) => {
     try {
         const { category } = req.query;
-        const items = await service.getProductByCategory(category);
-        if (!items) throw new Error("Category not found");
-        else res.json(items);
+        if (category === undefined) {
+            const products = await service.getProducts();
+            return res.json(products);
+        } else {
+            const response = await service.getProductByCategory(category);
+            res.json(response);
+        }
     } catch (error) {
-        console.log(error);
+        next(error.message);
     }
 };
 

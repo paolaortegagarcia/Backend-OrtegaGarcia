@@ -1,7 +1,27 @@
 import { ProductModel } from "./models/product.model.js";
 import { CartModel } from "./models/cart.model.js";
 export class ProductDaoMongoDB {
+    /* -------------------------------- Pipeline -------------------------------- */
+
+    async aggregationCategory(category) {
+        try {
+            return await ProductModel.aggregate([
+                {
+                    $match: { category: category },
+                },
+                {
+                    $sort: {
+                        price: 1,
+                    },
+                },
+            ]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     /* --------------------------------- Queries -------------------------------- */
+
     async getProductByCategory(category) {
         try {
             const response = await ProductModel.find({ category: category });

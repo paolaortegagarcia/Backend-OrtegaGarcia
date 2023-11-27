@@ -26,6 +26,15 @@ const prodDao = new ProductDaoMongoDB();
 //     }
 // };
 
+/* -------------------------------- Pipeline -------------------------------- */
+export const aggregationCategory = async (category) => {
+    try {
+        return await prodDao.aggregationCategory(category);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 /* --------------------------------- Queries -------------------------------- */
 
 export const getProductByCategory = async (category) => {
