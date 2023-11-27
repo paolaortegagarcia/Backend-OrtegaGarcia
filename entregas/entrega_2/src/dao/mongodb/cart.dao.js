@@ -26,49 +26,71 @@ export class CartDaoMongoDB {
 
     async getCartById(cartId) {
         try {
-            const response = await CartModel.findById(cartId);
+            const response = await CartModel.findById(cartId).populate({
+                path: "products.product",
+                model: "products",
+            });
             return response;
         } catch (error) {
             console.error(error);
         }
     }
 
-    async addProductToCart(cartId, productId) {
+    async deleteProductFromCart(cartId, productId) {
         try {
-            const existingProduct = await CartModel.findOne({
-                _id: cartId,
-                "products.product": productId,
-            });
+            const response = await CartModel.findByIdAndUpdate(
+                cartId,
+                {
+                    $pull: {
+                        products: { product: productId },
+                    },
+                },
+                { new: true }
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
-            if (existingProduct) {
-                const response = await CartModel.findOneAndUpdate(
-                    {
-                        _id: cartId,
-                        "products.product": productId,
+    async updateCart(cartId, updatedProducts) {
+        try {
+            const response = await CartModel.findByIdAndUpdate(
+                cartId,
+                { products: updatedProducts },
+                { new: true }
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async updateProductQuantity(cartId, productId, newQuantity) {
+        try {
+            const response = await CartModel.findOneAndUpdate(
+                { _id: cartId, "products.product": productId },
+                {
+                    $set: {
+                        "products.$.quantity": newQuantity,
                     },
-                    {
-                        $inc: {
-                            "products.$.quantity": 1,
-                        },
-                    },
-                    { new: true }
-                );
-                return response;
-            } else {
-                const response = await CartModel.findByIdAndUpdate(
-                    cartId,
-                    {
-                        $addToSet: {
-                            products: {
-                                product: productId,
-                                quantity: 1,
-                            },
-                        },
-                    },
-                    { new: true }
-                );
-                return response;
-            }
+                },
+                { new: true }
+            );
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async deleteAllProductsFromCart(cartId) {
+        try {
+            const response = await CartModel.findByIdAndUpdate(
+                cartId,
+                { products: [] },
+                { new: true }
+            );
+            return response || null;
         } catch (error) {
             console.error(error);
         }

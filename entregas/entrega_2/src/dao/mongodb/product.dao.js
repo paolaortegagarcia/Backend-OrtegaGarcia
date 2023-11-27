@@ -1,6 +1,52 @@
 import { ProductModel } from "./models/product.model.js";
-
+import { CartModel } from "./models/cart.model.js";
 export class ProductDaoMongoDB {
+    /* --------------------------------- Queries -------------------------------- */
+    async getProductByCategory(category) {
+        try {
+            const response = await ProductModel.find({ category: category });
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    /* ------------------------------- Add to Cart ------------------------------ */
+
+    async addProductToCart(cartId, productId) {
+        try {
+            const cart = await CartModel.findById(cartId);
+            const existingProduct = await CartModel.findOne({
+                _id: cartId,
+                "products.product": productId,
+            });
+
+            if (existingProduct) {
+                const response = await CartModel.findOneAndUpdate(
+                    {
+                        _id: cartId,
+                        "products.product": productId,
+                    },
+                    {
+                        $inc: {
+                            "products.$.quantity": 1,
+                        },
+                    },
+                    { new: true }
+                );
+                return response;
+            } else {
+                cart.products.push({ product: productId, quantity: 1 });
+            }
+
+            await cart.save();
+            return cart;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    /* ---------------------------------- CRUD ---------------------------------- */
     async createProduct(obj) {
         try {
             const response = await ProductModel.create(obj);

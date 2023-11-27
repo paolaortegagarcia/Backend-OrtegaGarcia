@@ -8,6 +8,9 @@ const atlasConnectionString =
 
 const compassConnectionString = "";
 
+/* ----------------------- Conexión desde VS Extension ---------------------- */
+// CTRL + P --> CONNECT WITH CONNECTION STRING  --> mongodb+srv://paoortega95:adminpaola@codercluster.ur9mb6u.mongodb.net/
+
 export const initMongoDB = async () => {
     try {
         await mongoose.connect(atlasConnectionString);

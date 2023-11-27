@@ -4,7 +4,17 @@ import * as controller from "../controllers/product.controller.js";
 
 const router = Router();
 
-router.get("/", controller.getProducts);
+//router.post("/bulk", controller.bulkProducts);
+
+router.get("/all", controller.getProducts);
+
+/* --------------------------------- Queries -------------------------------- */
+
+router.get("/", controller.getProductByCategory);
+
+/* ---------------------------------- CRUD ---------------------------------- */
+
+router.post("/add/:cartId/:productId", controller.addProductToCart);
 
 router.get("/:productId", controller.getProductsById);
 

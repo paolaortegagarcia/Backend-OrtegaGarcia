@@ -9,7 +9,45 @@ const prodDao = new ProductDaoMongoDB();
 //     __dirname + "/dao/filesystem/db/products.json"
 // );
 
-/* ------------------------------------ - ----------------------------------- */
+/* -------------------------- subir un JSON a MONGO ------------------------- */
+// import fs from "fs";
+// import { __dirname } from "../utils.js";
+// const productFile = JSON.parse(
+//     fs.readFileSync(__dirname + "/dao/filesystem/db/products.json")
+// );
+
+// export const bulkProducts = async () => {
+//     try {
+//         const newProducts = await prodDao.createProduct(productFile);
+//         if (!newProducts) return false;
+//         return { msg: "File uploaded successfully" };
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };
+
+/* --------------------------------- Queries -------------------------------- */
+
+export const getProductByCategory = async (category) => {
+    try {
+        return await prodDao.getProductByCategory(category);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+/* ------------------------------- Add to Cart ------------------------------ */
+export const addProductToCart = async (cartId, productId) => {
+    try {
+        const exists = await prodDao.getProductsById(productId);
+        const newProduct = await prodDao.addProductToCart(cartId, productId);
+        if (!exists) throw new Error("Product not found");
+        return newProduct;
+    } catch (error) {
+        console.log(error);
+    }
+};
+/* ------------------------------------ CRUD ----------------------------------- */
 
 export const getProducts = async () => {
     try {

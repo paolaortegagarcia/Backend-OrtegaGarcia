@@ -1,4 +1,5 @@
 import express from "express";
+import morgan from "morgan";
 import { __dirname } from "./utils.js";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
@@ -10,6 +11,7 @@ import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { initMongoDB } from "./dao/mongodb/connection.js";
 import * as productServices from "./services/product.service.js";
 import * as chatServices from "./services/chat.service.js";
+import { productValidator } from "./middlewares/product-validator.middleware.js";
 
 /* --------------------------------- Express -------------------------------- */
 
@@ -17,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
+app.use(morgan("dev"));
 
 /* --------------------------------- Routers -------------------------------- */
 
@@ -59,7 +62,7 @@ socketServer.on("connection", async (socket) => {
     });
 
     /* ---------------------------- RealTimeProducts ---------------------------- */
-    socket.on("newProduct", async (product) => {
+    socket.on("newProduct", productValidator, async (product) => {
         try {
             const newProduct = await productServices.createProduct(product);
             socketServer.emit("productAdded", newProduct);
