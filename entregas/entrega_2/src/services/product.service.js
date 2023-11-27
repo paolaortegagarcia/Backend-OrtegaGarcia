@@ -35,6 +35,14 @@ export const aggregationCategory = async (category) => {
     }
 };
 
+export const aggregationPrice = async (sort) => {
+    try {
+        return await prodDao.aggregationPrice(sort);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 /* --------------------------------- Queries -------------------------------- */
 
 export const getProductByCategory = async (category) => {
@@ -58,9 +66,9 @@ export const addProductToCart = async (cartId, productId) => {
 };
 /* ------------------------------------ CRUD ----------------------------------- */
 
-export const getProducts = async () => {
+export const getProducts = async (page, limit) => {
     try {
-        return await prodDao.getProducts();
+        return await prodDao.getProducts(page, limit);
     } catch (error) {
         console.log(error);
     }

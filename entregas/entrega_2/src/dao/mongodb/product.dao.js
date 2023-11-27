@@ -20,6 +20,22 @@ export class ProductDaoMongoDB {
         }
     }
 
+    async aggregationPrice(sort) {
+        try {
+            let sortOrder = sort === "asc" ? 1 : -1;
+
+            return await ProductModel.aggregate([
+                {
+                    $sort: {
+                        price: sortOrder,
+                    },
+                },
+            ]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     /* --------------------------------- Queries -------------------------------- */
 
     async getProductByCategory(category) {
@@ -76,9 +92,9 @@ export class ProductDaoMongoDB {
         }
     }
 
-    async getProducts() {
+    async getProducts(page = 1, limit = 10) {
         try {
-            const response = await ProductModel.find({});
+            const response = await ProductModel.paginate({}, { page, limit }); //el primero es para aplicarle a algun filtro - en este caso pido todo
             return response;
         } catch (error) {
             console.log(error);

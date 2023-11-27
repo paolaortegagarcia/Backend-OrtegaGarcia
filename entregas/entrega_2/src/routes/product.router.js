@@ -6,11 +6,12 @@ const router = Router();
 
 /* --------------------------------- Bulk -------------------------------- */
 
-//router.post("/bulk", controller.bulkProducts);
+// router.post("/bulk", controller.bulkProducts);
 
 /* ---------------------------------- Pipeline ---------------------------------- */
 
-router.get("/pipeline", controller.aggregationCategory);
+router.get("/pipelineCategory", controller.aggregationCategory);
+router.get("/pipelinePrice", controller.aggregationPrice);
 
 /* ---------------------------------- Get All ---------------------------------- */
 

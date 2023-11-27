@@ -27,6 +27,21 @@ export const aggregationCategory = async (req, res, next) => {
     }
 };
 
+export const aggregationPrice = async (req, res, next) => {
+    try {
+        const { sort } = req.query;
+        if (sort === undefined) {
+            const products = await service.getProducts();
+            return res.json(products);
+        } else {
+            const response = await service.aggregationPrice(sort);
+            res.json(response);
+        }
+    } catch (error) {
+        next(error.message);
+    }
+};
+
 /* --------------------------------- Queries -------------------------------- */
 
 export const getProductByCategory = async (req, res, next) => {
@@ -62,10 +77,28 @@ export const addProductToCart = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
     try {
-        const response = await service.getProducts();
+        const { page, limit } = req.query;
+        const response = await service.getProducts(page, limit);
         if (!response)
             res.status(404).json({ msg: "Error getting the products" });
-        else res.status(200).json(response);
+        const next = response.hasNextPage
+            ? `http://localhost:8080/api/products/all?page=${response.nextPage}`
+            : null;
+        const prev = response.hasPrevPage
+            ? `http://localhost:8080/api/products/all?page=${response.prevPage}`
+            : null;
+        res.status(200).json({
+            payload: response.docs,
+            info: {
+                count: response.totalDocs,
+                totalPages: response.totalPages,
+                hasNextPage: response.hasNextPage,
+                hasPrevPage: response.hasPrevPage,
+                page: response.page,
+                nextPage: next,
+                prevPage: prev,
+            },
+        });
     } catch (error) {
         next(error.message);
     }
