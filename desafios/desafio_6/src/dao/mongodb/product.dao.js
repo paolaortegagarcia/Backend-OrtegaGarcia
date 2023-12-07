@@ -1,52 +1,6 @@
 import { ProductModel } from "./models/product.model.js";
 import { CartModel } from "./models/cart.model.js";
 export class ProductDaoMongoDB {
-    /* -------------------------------- Pipeline -------------------------------- */
-
-    async aggregationCategory(category) {
-        try {
-            return await ProductModel.aggregate([
-                {
-                    $match: { category: category },
-                },
-                {
-                    $sort: {
-                        price: 1,
-                    },
-                },
-            ]);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async aggregationPrice(sort) {
-        try {
-            let sortOrder = sort === "asc" ? 1 : -1;
-
-            return await ProductModel.aggregate([
-                {
-                    $sort: {
-                        price: sortOrder,
-                    },
-                },
-            ]);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    /* --------------------------------- Queries -------------------------------- */
-
-    async getProductByCategory(category) {
-        try {
-            const response = await ProductModel.find({ category: category });
-            return response;
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     /* ------------------------------- Add to Cart ------------------------------ */
 
     async addProductToCart(cartId, productId) {
@@ -92,9 +46,37 @@ export class ProductDaoMongoDB {
         }
     }
 
-    async getProducts(page = 1, limit = 10) {
+    // En el getAll, implemento las queries y aggregations
+    async getProducts(page = 1, limit = 10, category, sort) {
         try {
-            const response = await ProductModel.paginate({}, { page, limit }); //el primero es para aplicarle a algun filtro - en este caso pido todo
+            let queryCategory = {};
+
+            if (category) {
+                queryCategory = { category: category };
+            }
+
+            let sortOrder = sort === "asc" ? 1 : -1;
+
+            let pagination = { page, limit };
+
+            if (sort) {
+                pagination.sort = { price: sortOrder };
+            }
+
+            const response = await ProductModel.paginate(
+                queryCategory,
+                pagination
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    async getProductsRender() {
+        try {
+            const response = await ProductModel.find({});
             return response;
         } catch (error) {
             console.log(error);

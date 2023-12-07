@@ -1,3 +1,15 @@
+{{#if user}}
+    <div class="welcome-message">
+        <p>Bienvenid@, {{user.email}}. </p>
+        <p>Rol: {{user.role}}</p>
+    </div>
+
+    <form action="/users/logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+
+{{/if}}
+
 <div class="products-heading">
     <h3>Productos Disponibles</h3>
 </div>

@@ -11,54 +11,6 @@ import * as service from "../services/product.service.js";
 //     }
 // };
 
-/* -------------------------------- Pipeline -------------------------------- */
-export const aggregationCategory = async (req, res, next) => {
-    try {
-        const { category } = req.query;
-        if (category === undefined) {
-            const products = await service.getProducts();
-            return res.json(products);
-        } else {
-            const response = await service.aggregationCategory(category);
-            res.json(response);
-        }
-    } catch (error) {
-        next(error.message);
-    }
-};
-
-export const aggregationPrice = async (req, res, next) => {
-    try {
-        const { sort } = req.query;
-        if (sort === undefined) {
-            const products = await service.getProducts();
-            return res.json(products);
-        } else {
-            const response = await service.aggregationPrice(sort);
-            res.json(response);
-        }
-    } catch (error) {
-        next(error.message);
-    }
-};
-
-/* --------------------------------- Queries -------------------------------- */
-
-export const getProductByCategory = async (req, res, next) => {
-    try {
-        const { category } = req.query;
-        if (category === undefined) {
-            const products = await service.getProducts();
-            return res.json(products);
-        } else {
-            const response = await service.getProductByCategory(category);
-            res.json(response);
-        }
-    } catch (error) {
-        next(error.message);
-    }
-};
-
 /* ------------------------------- Add to Cart ------------------------------ */
 export const addProductToCart = async (req, res, next) => {
     try {
@@ -77,17 +29,21 @@ export const addProductToCart = async (req, res, next) => {
 
 export const getProducts = async (req, res, next) => {
     try {
-        const { page, limit } = req.query;
-        const response = await service.getProducts(page, limit);
+        const { page, limit, category, sort } = req.query;
+        const response = await service.getProducts(page, limit, category, sort);
+
         if (!response)
             res.status(404).json({ msg: "Error getting the products" });
+
         const next = response.hasNextPage
             ? `http://localhost:8080/api/products/all?page=${response.nextPage}`
             : null;
         const prev = response.hasPrevPage
             ? `http://localhost:8080/api/products/all?page=${response.prevPage}`
             : null;
+
         res.status(200).json({
+            status: response.docs.length > 0 ? "success" : "error",
             payload: response.docs,
             info: {
                 count: response.totalDocs,
@@ -99,6 +55,17 @@ export const getProducts = async (req, res, next) => {
                 prevPage: prev,
             },
         });
+    } catch (error) {
+        next(error.message);
+    }
+};
+
+export const getProductsRender = async (req, res, next) => {
+    try {
+        const response = await service.getProductsRender();
+        if (!response)
+            res.status(404).json({ msg: "Error getting the products" });
+        else res.status(200).json(response);
     } catch (error) {
         next(error.message);
     }

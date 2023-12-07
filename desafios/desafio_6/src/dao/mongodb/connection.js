@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 /* -------------------------------- Conexión desde Atlas -------------------------------- */
-const atlasConnectionString =
+export const atlasConnectionString =
     "mongodb+srv://paoortega95:adminpaola@codercluster.ur9mb6u.mongodb.net/ecommerce?retryWrites=true&w=majority";
 
 /* -------------------------------- Conexión desde Compass -------------------------------- */

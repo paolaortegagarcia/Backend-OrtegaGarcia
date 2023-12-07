@@ -26,33 +26,6 @@ const prodDao = new ProductDaoMongoDB();
 //     }
 // };
 
-/* -------------------------------- Pipeline -------------------------------- */
-export const aggregationCategory = async (category) => {
-    try {
-        return await prodDao.aggregationCategory(category);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const aggregationPrice = async (sort) => {
-    try {
-        return await prodDao.aggregationPrice(sort);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-/* --------------------------------- Queries -------------------------------- */
-
-export const getProductByCategory = async (category) => {
-    try {
-        return await prodDao.getProductByCategory(category);
-    } catch (error) {
-        console.log(error);
-    }
-};
-
 /* ------------------------------- Add to Cart ------------------------------ */
 export const addProductToCart = async (cartId, productId) => {
     try {
@@ -66,9 +39,17 @@ export const addProductToCart = async (cartId, productId) => {
 };
 /* ------------------------------------ CRUD ----------------------------------- */
 
-export const getProducts = async (page, limit) => {
+export const getProducts = async (page, limit, category, sort) => {
     try {
-        return await prodDao.getProducts(page, limit);
+        return await prodDao.getProducts(page, limit, category, sort);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getProductsRender = async () => {
+    try {
+        return await prodDao.getProductsRender();
     } catch (error) {
         console.log(error);
     }

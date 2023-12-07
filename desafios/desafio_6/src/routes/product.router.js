@@ -8,18 +8,9 @@ const router = Router();
 
 // router.post("/bulk", controller.bulkProducts);
 
-/* ---------------------------------- Pipeline ---------------------------------- */
-
-router.get("/pipelineCategory", controller.aggregationCategory);
-router.get("/pipelinePrice", controller.aggregationPrice);
-
 /* ---------------------------------- Get All ---------------------------------- */
 
-router.get("/all", controller.getProducts);
-
-/* ---------------------------------- Queries ---------------------------------- */
-
-router.get("/", controller.getProductByCategory);
+router.get("/all", controller.getProducts); // En el getAll, implemento las queries y aggregations
 
 /* ---------------------------------- CRUD ---------------------------------- */
 

@@ -1,17 +1,42 @@
 import express from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import { __dirname } from "./utils.js";
 import productRouter from "./routes/product.router.js";
 import cartRouter from "./routes/cart.router.js";
 import chatRouter from "./routes/chat.router.js";
 import viewRouter from "./routes/view.router.js";
+import userRouter from "./routes/user.router.js";
 import handlebars from "express-handlebars";
 import { Server } from "socket.io";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
-import { initMongoDB } from "./dao/mongodb/connection.js";
+import {
+    atlasConnectionString,
+    initMongoDB,
+} from "./dao/mongodb/connection.js";
 import * as productServices from "./services/product.service.js";
 import * as chatServices from "./services/chat.service.js";
 import { productValidator } from "./middlewares/product-validator.middleware.js";
+
+/* -------------------------------- MongoStore ------------------------------- */
+
+const mongoStoreOptions = {
+    store: MongoStore.create({
+        mongoUrl: atlasConnectionString,
+        ttl: 120,
+        crypto: {
+            secret: "1234",
+        },
+    }),
+    secret: "1234",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 120000,
+    },
+};
 
 /* --------------------------------- Express -------------------------------- */
 
@@ -21,12 +46,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(morgan("dev"));
 
+app.use(session(mongoStoreOptions));
+
 /* --------------------------------- Routers -------------------------------- */
 
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/api/chats", chatRouter);
-app.use("/", viewRouter);
+app.use("/views", viewRouter);
+app.use("/users", userRouter);
 
 /* ---------------------------------- Error Handler--------------------------------- */
 
