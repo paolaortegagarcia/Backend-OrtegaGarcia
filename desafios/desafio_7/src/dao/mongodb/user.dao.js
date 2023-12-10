@@ -1,3 +1,4 @@
+//import { createHash, isValidPass } from "../../utils.js";
 import { UserModel } from "./models/user.model.js";
 
 export class UserDaoMongoDB {
@@ -13,19 +14,29 @@ export class UserDaoMongoDB {
                 email === "adminCoder@coder.com" &&
                 password === "adminCod3r123"
             ) {
-                return await UserModel.create({ ...user, role: "admin" });
+                return await UserModel.create({
+                    ...user,
+                    //password: createHash(password),
+                    password,
+                    role: "admin",
+                });
             }
 
             const userExists = await this.findByEmail(email);
 
             if (!userExists) {
-                const newUser = await UserModel.create(user); //registramos, creamos un nuevo usuario
+                const newUser = await UserModel.create({
+                    ...user,
+                    //password: createHash(password),
+                    password,
+                });
                 return newUser;
             } else {
                 return false;
             }
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 
@@ -33,13 +44,31 @@ export class UserDaoMongoDB {
         try {
             const userRegistered = await UserModel.findOne({
                 email,
-                password,
             });
             if (!userRegistered) {
                 return false;
             } else {
-                return userRegistered;
+                return userExist;
+                /*                const isValidPassword = isValidPass(password, userRegistered);
+                console.log("valid dao: ", isValidPassword);
+                if (!isValidPassword) {
+                    return false;
+                } else {
+                    return userRegistered;
+                } */
             }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getById(id) {
+        try {
+            const userExist = await UserModel.findById(id);
+            if (userExist) {
+                return userExist;
+            }
+            return false;
         } catch (error) {
             console.log(error);
         }

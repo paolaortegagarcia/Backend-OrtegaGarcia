@@ -2,34 +2,27 @@ import * as service from "../services/user.service.js";
 
 export const register = async (req, res, next) => {
     try {
-        const user = await service.register(req.body);
-        if (user) {
-            res.redirect("/views/login");
-        } else {
-            res.redirect("/views/register");
-        }
+        res.json({
+            msg: "register ok",
+            session: req.session,
+        });
     } catch (error) {
-        console.error("Error in register controller:", error);
         next(error.message);
     }
 };
 
 export const login = async (req, res, next) => {
     try {
-        console.log(req.body);
-        const { email, password } = req.body;
-        const user = await service.login(email, password);
-        console.log("user recibido:", user);
-        if (user) {
-            req.session.email = email;
-            req.session.password = password;
-            req.session.role = user.role;
-            res.redirect("/views");
-        } else {
-            res.redirect("/users/authenticationError");
-        }
+        const id = req.session.passport.user;
+        console.log("id controller: ", id);
+        const user = await service.getById(id);
+
+        const { first_name, last_name } = user;
+        res.json({
+            msg: "login ok",
+            user: { first_name, last_name },
+        });
     } catch (error) {
-        console.error("Error in login controller:", error);
         next(error.message);
     }
 };
@@ -42,6 +35,24 @@ export const logout = (req, res) => {
     } catch (error) {
         console.error("Error during logout:", error);
         res.status(500).send("Internal Server Error");
+    }
+};
+
+export const githubResponse = async (req, res, next) => {
+    try {
+        console.log(req.user);
+        const { first_name, email, isGithub } = req.user;
+        res.json({
+            msg: "Register/Login Github ok",
+            session: req.session,
+            user: {
+                first_name,
+                email,
+                isGithub,
+            },
+        });
+    } catch (error) {
+        next(error.message);
     }
 };
 

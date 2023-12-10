@@ -27,8 +27,9 @@ export const mongoStoreOptions = {
 import { hashSync, genSaltSync, compareSync } from "bcrypt";
 
 //registro
+
 export const createHash = (password) => {
-    return hashSync(password, genSaltSync(10));
+    return hashSync(password, genSaltSync(10)); //el numero es la cantidad de veces que recorre para crear la password hasheada
 };
 
 //login
@@ -41,5 +42,6 @@ export const createHash = (password) => {
  */
 
 export const isValidPass = (password, user) => {
-    return compareSync(password, user.password);
+    console.log("Recibiendo en utils: ", password, user.password);
+    return compareSync(password, user.password); // password sin hashear comparada con la hasheada
 };

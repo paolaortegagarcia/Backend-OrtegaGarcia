@@ -15,6 +15,9 @@ import { initMongoDB } from "./dao/mongodb/connection.js";
 import * as productServices from "./services/product.service.js";
 import * as chatServices from "./services/chat.service.js";
 import { productValidator } from "./middlewares/product-validator.middleware.js";
+import "./passport/local-strategy.js";
+import passport from "passport";
+import "./passport/github-strategy.js";
 
 /* --------------------------------- Express -------------------------------- */
 
@@ -26,6 +29,9 @@ app.use(morgan("dev"));
 
 app.use(session(mongoStoreOptions));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 /* --------------------------------- Routers -------------------------------- */
 
 app.use("/api/products", productRouter);
@@ -33,10 +39,6 @@ app.use("/api/carts", cartRouter);
 app.use("/api/chats", chatRouter);
 app.use("/views", viewRouter);
 app.use("/users", userRouter);
-
-/* ---------------------------------- Error Handler--------------------------------- */
-
-app.use(errorHandler);
 
 /* ------------------------------- Handlebars ------------------------------- */
 
@@ -50,6 +52,10 @@ const PORT = 8080;
 const httpServer = app.listen(PORT, () =>
     console.log(`🚀 Server is running on port ${PORT}`)
 );
+
+/* ---------------------------------- Error Handler--------------------------------- */
+
+app.use(errorHandler);
 
 /* ------------------------------- Persistence ------------------------------ */
 

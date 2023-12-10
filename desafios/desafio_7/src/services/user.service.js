@@ -29,3 +29,12 @@ export const login = async (email, password) => {
         throw error;
     }
 };
+
+export const getById = async (id) => {
+    try {
+        const response = await userDao.getById(id);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
