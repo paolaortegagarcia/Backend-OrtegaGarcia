@@ -12,7 +12,7 @@ const userDao = new UserDaoMongoDB();
 const strategyOptions = {
     clientID: "Iv1.36ce015c8ef43048",
     clientSecret: "cc8f3b59f0fb9ae772092672896170181ae14b9c",
-    callbackURL: "http://localhost:8080/users/github",
+    callbackURL: "http://localhost:8080/api/users/github",
     scope: ["user:email"],
 };
 

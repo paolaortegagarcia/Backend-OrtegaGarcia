@@ -1,25 +1,20 @@
 import express from "express";
 import morgan from "morgan";
-import cookieParser from "cookie-parser";
+import handlebars from "express-handlebars";
 import session from "express-session";
 import { __dirname, mongoStoreOptions } from "./utils.js";
-import productRouter from "./routes/product.router.js";
-import cartRouter from "./routes/cart.router.js";
-import chatRouter from "./routes/chat.router.js";
-import viewRouter from "./routes/view.router.js";
-import userRouter from "./routes/user.router.js";
-import handlebars from "express-handlebars";
-import { Server } from "socket.io";
+import ApiRoutes from "./routes/index.routes/api.router.js";
+import renderRoutes from "./routes/index.routes/render.router.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { initMongoDB } from "./dao/mongodb/connection.js";
-import * as productServices from "./services/product.service.js";
-import * as chatServices from "./services/chat.service.js";
-import { productValidator } from "./middlewares/product-validator.middleware.js";
+import socketConfig from "./socket/socket.js";
 import "./passport/local-strategy.js";
 import passport from "passport";
 import "./passport/github-strategy.js";
+import "dotenv/config";
+const apiRoutes = new ApiRoutes();
 
-/* --------------------------------- Express -------------------------------- */
+/* --------------------------------- Express / Passport -------------------------------- */
 
 const app = express();
 app.use(express.json());
@@ -34,11 +29,8 @@ app.use(passport.session());
 
 /* --------------------------------- Routers -------------------------------- */
 
-app.use("/api/products", productRouter);
-app.use("/api/carts", cartRouter);
-app.use("/api/chats", chatRouter);
-app.use("/views", viewRouter);
-app.use("/users", userRouter);
+app.use("/api", apiRoutes.getRouter());
+app.use("/", renderRoutes); //handlebars - vistas
 
 /* ------------------------------- Handlebars ------------------------------- */
 
@@ -48,7 +40,7 @@ app.set("view engine", "handlebars");
 
 /* --------------------------------- Server --------------------------------- */
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const httpServer = app.listen(PORT, () =>
     console.log(`🚀 Server is running on port ${PORT}`)
 );
@@ -59,46 +51,10 @@ app.use(errorHandler);
 
 /* ------------------------------- Persistence ------------------------------ */
 
-const persistence = "MONGO";
+const persistence = process.env.PERSISTENCE;
 
 if (persistence === "MONGO") await initMongoDB();
 
-/* -------------------------------- WebSocket ------------------------------- */
+/* --------------------------------- Socket --------------------------------- */
 
-export const socketServer = new Server(httpServer);
-
-socketServer.on("connection", async (socket) => {
-    console.log(`🟢 Usuario Conectado ${socket.id}`);
-    socket.on("disconnect", () => {
-        console.log("🔴 Usuario Desconectado");
-    });
-
-    /* ---------------------------- RealTimeProducts ---------------------------- */
-    socket.on("newProduct", productValidator, async (product) => {
-        try {
-            const newProduct = await productServices.createProduct(product);
-            socketServer.emit("productAdded", newProduct);
-
-            const products = await productServices.getProducts();
-            socketServer.emit("arrayProducts", products);
-        } catch (error) {
-            console.error("Error adding product:", error);
-        }
-    });
-
-    /* ---------------------------------- Chat ---------------------------------- */
-    socketServer.emit("messages", await chatServices.getMessages());
-    socket.on("newUser", (user) => {
-        console.log(`🙋‍♀️🙋‍♂️ ${user} has logged in`);
-    });
-    socket.on("chat:message", async (msg) => {
-        await chatServices.createMessage(msg);
-        socketServer.emit("messages", await chatServices.getMessages());
-    });
-    socket.on("newUser", (user) => {
-        socket.broadcast.emit("newUser", user);
-    });
-    socket.on("chat:typing", (user) => {
-        socket.broadcast.emit("chat:typing", user);
-    });
-});
+socketConfig(httpServer);

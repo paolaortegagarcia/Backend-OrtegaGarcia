@@ -1,4 +1,5 @@
 import { UserDaoMongoDB } from "../dao/mongodb/user.dao.js";
+
 const userDao = new UserDaoMongoDB();
 
 export const register = async (user) => {

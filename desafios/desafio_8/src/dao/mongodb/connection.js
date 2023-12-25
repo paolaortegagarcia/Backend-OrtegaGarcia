@@ -1,15 +1,7 @@
 import mongoose from "mongoose";
+import "dotenv/config";
 
-/* -------------------------------- Conexión desde Atlas -------------------------------- */
-export const atlasConnectionString =
-    "mongodb+srv://paoortega95:adminpaola@codercluster.ur9mb6u.mongodb.net/ecommerce?retryWrites=true&w=majority";
-
-/* -------------------------------- Conexión desde Compass -------------------------------- */
-
-const compassConnectionString = "";
-
-/* ----------------------- Conexión desde VS Extension ---------------------- */
-// CTRL + P --> CONNECT WITH CONNECTION STRING  --> mongodb+srv://paoortega95:adminpaola@codercluster.ur9mb6u.mongodb.net/
+export const atlasConnectionString = process.env.ATLAS_MONGO_URL;
 
 export const initMongoDB = async () => {
     try {

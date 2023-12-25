@@ -1,4 +1,4 @@
-//import { createHash, isValidPass } from "../../utils.js";
+//import { createHash, isValidPass } from "../../utils.js"; // ESTA TODO COMENTADO PORQUE ROMPE CON GITHUB
 import { UserModel } from "./models/user.model.js";
 
 export class UserDaoMongoDB {
@@ -48,8 +48,8 @@ export class UserDaoMongoDB {
             if (!userRegistered) {
                 return false;
             } else {
-                return userExist;
-                /*                const isValidPassword = isValidPass(password, userRegistered);
+                return userRegistered;
+                /* const isValidPassword = isValidPass(password, userRegistered);
                 console.log("valid dao: ", isValidPassword);
                 if (!isValidPassword) {
                     return false;
