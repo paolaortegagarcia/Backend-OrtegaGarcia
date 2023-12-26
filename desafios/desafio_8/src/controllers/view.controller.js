@@ -1,63 +1,76 @@
-import * as service from "../services/product.service.js";
-import * as chatService from "../services/chat.service.js";
+import Controllers from "./class.controller.js";
+import ProductService from "../services/product.service.js";
+import ChatService from "../services/chat.service.js";
+const productService = new ProductService();
+const chatService = new ChatService();
 
-export const renderHome = async (req, res, next) => {
-    try {
-        const products = await service.getProductsRender(); // Cree otro metodo porque con el paginate no renderiza bien
-        /* ------------------------------- FileSystem ------------------------------- */
-        // res.render("home", { products });
-        /* ---------------------------------- Mongo --------------------------------- */
-        const productsMongo = products.map((product) =>
-            Object.assign({}, product.toJSON())
-        );
-
-        const { email, role } = req.session;
-        console.log("rol en controller", role);
-
-        res.render("home", { products: productsMongo, user: { email, role } });
-    } catch (error) {
-        next(error.message);
+export default class ViewController extends Controllers {
+    constructor() {
+        super(productService, chatService);
     }
-};
 
-export const renderRealTimeProducts = async (req, res, next) => {
-    try {
-        const products = await service.getProducts();
-        res.render("realTimeProducts", { products });
-    } catch (error) {
-        next(error.message);
-    }
-};
+    async renderHome(req, res, next) {
+        try {
+            const products = await service.getAll();
+            /* ------------------------------- FileSystem ------------------------------- */
+            // res.render("home", { products });
 
-export const renderChat = async (req, res, next) => {
-    try {
-        const messages = await chatService.getMessages();
-        res.render("chat", { messages });
-    } catch (error) {
-        next(error.message);
-    }
-};
+            /* ---------------------------------- Mongo --------------------------------- */
+            const productsMongo = products.map((product) =>
+                Object.assign({}, product.toJSON())
+            );
 
-export const renderLogInForm = async (req, res, next) => {
-    try {
-        res.render("login");
-    } catch (error) {
-        next(error.message);
-    }
-};
+            const { email, role } = req.session;
+            console.log("rol en controller", role);
 
-export const renderRegisterForm = async (req, res, next) => {
-    try {
-        res.render("register");
-    } catch (error) {
-        next(error.message);
+            res.render("home", {
+                products: productsMongo,
+                user: { email, role },
+            });
+        } catch (error) {
+            next(error.message);
+        }
     }
-};
 
-export const renderUserProfile = async (req, res, next) => {
-    try {
-        res.render("profile");
-    } catch (error) {
-        next(error.message);
+    async renderRealTimeProducts(req, res, next) {
+        try {
+            const products = await service.getAll();
+            res.render("realTimeProducts", { products });
+        } catch (error) {
+            next(error.message);
+        }
     }
-};
+
+    async renderChat(req, res, next) {
+        try {
+            const messages = await chatService.getAll();
+            res.render("chat", { messages });
+        } catch (error) {
+            next(error.message);
+        }
+    }
+
+    async renderLogInForm(req, res, next) {
+        try {
+            res.render("login");
+        } catch (error) {
+            next(error.message);
+        }
+    }
+
+    async renderRegisterForm(req, res, next) {
+        try {
+            res.render("register");
+        } catch (error) {
+            next(error.message);
+        }
+    }
+
+    async renderUserProfile(req, res, next) {
+        try {
+            res.render("profile");
+        } catch (error) {
+            next(error.message);
+        }
+    }
+}

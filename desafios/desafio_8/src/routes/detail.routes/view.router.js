@@ -1,5 +1,6 @@
 import { Router } from "express";
-import * as controller from "../../controllers/view.controller.js";
+import ViewController from "../../controllers/view.controller.js";
+const controller = new ViewController();
 
 const router = Router();
 

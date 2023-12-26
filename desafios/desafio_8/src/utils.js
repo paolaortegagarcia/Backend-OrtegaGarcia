@@ -45,3 +45,8 @@ export const isValidPass = (password, user) => {
     console.log("Recibiendo en utils: ", password, user.password);
     return compareSync(password, user.password); // password sin hashear comparada con la hasheada
 };
+
+// respuestas más uniformes - con el mismo formato - se usa en el controller
+export const createResponse = (res, statusCode, data) => {
+    return res.status(statusCode).json({ data });
+};

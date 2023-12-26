@@ -6,7 +6,7 @@ import { __dirname, mongoStoreOptions } from "./utils.js";
 import ApiRoutes from "./routes/index.routes/api.router.js";
 import renderRoutes from "./routes/index.routes/render.router.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
-import { initMongoDB } from "./dao/mongodb/connection.js";
+import { initMongoDB } from "./config/connection.js";
 import socketConfig from "./socket/socket.js";
 import "./passport/local-strategy.js";
 import passport from "passport";

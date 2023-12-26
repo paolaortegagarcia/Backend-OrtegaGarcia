@@ -1,5 +1,5 @@
 import Services from "./class.service.js";
-import { CartDaoMongoDB } from "../dao/mongodb/cart.dao.js";
+import { CartDaoMongoDB } from "../dao/mongodb/carts/cart.dao.js";
 const cartDao = new CartDaoMongoDB();
 
 export default class CartService extends Services {
