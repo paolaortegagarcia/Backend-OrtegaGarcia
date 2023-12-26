@@ -1,4 +1,4 @@
-import { CartModel } from "./models/cart.model.js";
+import { CartModel } from "./cart.model.js";
 import MongoDao from "../mongo.dao.js";
 
 export class CartDaoMongoDB extends MongoDao {

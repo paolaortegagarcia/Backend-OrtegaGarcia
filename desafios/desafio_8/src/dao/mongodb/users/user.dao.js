@@ -2,7 +2,7 @@ import { createHash, isValidPass } from "../../../utils.js";
 import MongoDao from "../mongo.dao.js";
 import { UserModel } from "./user.model.js";
 
-export class UserDaoMongoDB extends MongoDao {
+export default class UserDaoMongoDB extends MongoDao {
     constructor() {
         super(UserModel);
     }

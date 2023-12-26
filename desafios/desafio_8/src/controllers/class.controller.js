@@ -17,6 +17,7 @@ export default class Controllers {
     getById = async (req, res, next) => {
         try {
             const { id } = req.params;
+            console.log(id);
             const item = await this.service.getById(id);
             if (!item)
                 createResponse(res, 404, {

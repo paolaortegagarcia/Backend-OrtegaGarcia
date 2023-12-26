@@ -6,7 +6,7 @@ Client Secret: cc8f3b59f0fb9ae772092672896170181ae14b9c
 
 import { Strategy as GithubStrategy } from "passport-github2";
 import passport from "passport";
-import { UserDaoMongoDB } from "../dao/mongodb/users/user.dao.js";
+import UserDaoMongoDB from "../dao/mongodb/users/user.dao.js";
 const userDao = new UserDaoMongoDB();
 
 const strategyOptions = {

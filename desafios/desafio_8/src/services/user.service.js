@@ -1,7 +1,7 @@
 import Services from "./class.service.js";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
-import { UserDaoMongoDB } from "../dao/mongodb/users/user.dao.js";
+import UserDaoMongoDB from "../dao/mongodb/users/user.dao.js";
 const userDao = new UserDaoMongoDB();
 
 const SECRET_KEY_JWT = process.env.SECRET_KEY_JWT;
