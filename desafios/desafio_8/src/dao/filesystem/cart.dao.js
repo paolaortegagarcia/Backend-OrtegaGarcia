@@ -1,61 +1,8 @@
-import fs from "fs";
-import { v4 as uuidv4 } from "uuid";
+import FSDao from "./fs.dao";
 
-export class CartDaoFS {
+export class CartDaoFS extends FSDao {
     constructor(path) {
-        this.carts = [];
-        this.path = path;
-        this.createFile();
-    }
-
-    /* -------------------------------- Carritos ------------------------------- */
-
-    async createCart() {
-        try {
-            const cart = {
-                id: uuidv4(),
-                products: [],
-            };
-
-            this.carts.push(cart);
-            await this.saveFile(this.carts);
-            console.log("New cart added, details:", cart);
-            return cart;
-        } catch (error) {
-            console.log("Error adding the cart:", error);
-        }
-    }
-
-    async getCarts() {
-        try {
-            if (fs.existsSync(this.path)) {
-                const carts = await this.getFile();
-                console.log("Number of carts:", carts.length);
-                return carts;
-            } else {
-                console.log("No cart list found");
-                return [];
-            }
-        } catch (error) {
-            console.log("Error getting the carts:", error);
-            return [];
-        }
-    }
-
-    async getCartById(id) {
-        try {
-            const carts = await this.getFile();
-            const cartId = carts.find((cart) => cart.id === id);
-
-            if (cartId) {
-                console.log("Requested ID details:", cartId);
-                return cartId;
-            } else {
-                console.error("Cart with that ID not found");
-            }
-        } catch (error) {
-            console.error("Error getting the cart by ID:", error);
-        }
+        super(path);
     }
 
     async addProductToCart(cartId, productId) {
@@ -88,57 +35,6 @@ export class CartDaoFS {
             }
         } catch (error) {
             console.error("Error getting the cart by ID:", error);
-        }
-    }
-
-    /* ------------------------------- Archivo JSON ------------------------------ */
-
-    async createFile() {
-        try {
-            if (!fs.existsSync(this.path)) {
-                await fs.promises.writeFile(this.path, JSON.stringify([]));
-            }
-        } catch (error) {
-            console.error("Error creating the file:", error);
-        }
-    }
-
-    async getFile() {
-        try {
-            const carts = await fs.promises.readFile(this.path, "utf-8");
-            return JSON.parse(carts);
-        } catch (error) {
-            console.error("Error reading the file:", error);
-            return [];
-        }
-    }
-
-    async saveFile(carts) {
-        try {
-            if (fs.existsSync(this.path)) {
-                const existingCarts = await this.getFile();
-                existingCarts.push(...carts);
-                await fs.promises.writeFile(
-                    this.path,
-                    JSON.stringify(existingCarts)
-                );
-            } else {
-                await fs.promises.writeFile(this.path, JSON.stringify(carts));
-            }
-        } catch (error) {
-            console.error("Error saving the file:", error);
-        }
-    }
-
-    async updateFile(carts) {
-        try {
-            if (fs.existsSync(this.path)) {
-                await fs.promises.writeFile(this.path, JSON.stringify(carts));
-            } else {
-                await fs.promises.writeFile(this.path, JSON.stringify(carts));
-            }
-        } catch (error) {
-            console.error("Error updating the file:", error);
         }
     }
 }

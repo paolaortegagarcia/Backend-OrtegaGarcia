@@ -1,6 +1,6 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { atlasConnectionString } from "./dao/mongodb/connection.js";
+import { atlasConnectionString } from "./config/connection.js";
 import MongoStore from "connect-mongo";
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 

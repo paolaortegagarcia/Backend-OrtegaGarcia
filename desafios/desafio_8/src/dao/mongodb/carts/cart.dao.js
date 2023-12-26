@@ -1,6 +1,11 @@
 import { CartModel } from "./models/cart.model.js";
+import MongoDao from "../mongo.dao.js";
 
-export class CartDaoMongoDB {
+export class CartDaoMongoDB extends MongoDao {
+    constructor() {
+        super(CartModel);
+    }
+
     async createCart() {
         try {
             const cart = {
@@ -11,16 +16,6 @@ export class CartDaoMongoDB {
             return response;
         } catch (error) {
             console.log(error);
-        }
-    }
-
-    async getCarts() {
-        try {
-            const response = await CartModel.find({});
-            return response;
-        } catch (error) {
-            console.log(error);
-            return [];
         }
     }
 
