@@ -26,13 +26,13 @@ const socketConfig = (httpServer) => {
         });
 
         /* ---------------------------------- Chat ---------------------------------- */
-        socketServer.emit("messages", await chatServices.getMessages());
+        socketServer.emit("messages", await chatServices.getAll());
         socket.on("newUser", (user) => {
             console.log(`🙋‍♀️🙋‍♂️ ${user} has logged in`);
         });
         socket.on("chat:message", async (msg) => {
             await chatServices.createMessage(msg);
-            socketServer.emit("messages", await chatServices.getMessages());
+            socketServer.emit("messages", await chatServices.getAll());
         });
         socket.on("newUser", (user) => {
             socket.broadcast.emit("newUser", user);

@@ -10,7 +10,12 @@ export default class ViewController extends Controllers {
     }
 
     async renderHome(req, res, next) {
+        res.render("welcome");
+    }
+
+    async renderProducts(req, res, next) {
         try {
+            console.log("en el home");
             const products = await service.getAll();
             /* ------------------------------- FileSystem ------------------------------- */
             // res.render("home", { products });
