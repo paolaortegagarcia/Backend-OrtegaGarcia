@@ -21,25 +21,23 @@ export default class UserController extends Controllers {
 
     async login(req, res, next) {
         try {
-            console.log("Entered login method");
-            const id = req.session.passport.user;
-            console.log("User ID from session:", id);
-
-            const user = await userService.getById(id);
+            const { user, access_token } = await userService.login(
+                req.body.email,
+                req.body.password
+            );
             if (!user) {
-                console.log("User not found with ID:", id);
-                return createResponse(res, 404, "User not found");
+                createResponse(
+                    res,
+                    401,
+                    "User not found or invalid credentials"
+                );
+            } else {
+                res.header("Authorization", access_token).json({
+                    msg: "Login OK",
+                    user,
+                    access_token,
+                });
             }
-
-            const { first_name, last_name } = user;
-            console.log("Login successful for user:", user);
-            res.json({
-                msg: "login ok!",
-                user: {
-                    first_name,
-                    last_name,
-                },
-            });
         } catch (error) {
             console.error("Error in login method:", error);
             next(error.message);

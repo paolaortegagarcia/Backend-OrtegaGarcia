@@ -30,13 +30,18 @@ const signup = async (req, email, password, done) => {
 
 const login = async (req, email, password, done) => {
     try {
-        console.log("Attempting login with email:", email);
-        const userLogin = await userDao.loginUser(req.body);
-        if (!userLogin) return done(null, false, { msg: "User not found" });
-        console.log("Login successful for user:", userLogin);
+        const userLogin = await userDao.loginUser(email, password);
+        console.log("volvio al strategy", userLogin);
+
+        if (!userLogin) {
+            return done(null, false, {
+                msg: "User not found or invalid credentials",
+            });
+        }
         return done(null, userLogin);
     } catch (error) {
-        console.log(error);
+        console.error("Error during login:", error);
+        return done(error);
     }
 };
 

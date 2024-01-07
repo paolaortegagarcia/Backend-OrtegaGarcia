@@ -1,21 +1,11 @@
 import Services from "./class.service.js";
-import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { generateToken } from "../jwt/auth.js";
 import UserDaoMongoDB from "../dao/mongodb/users/user.dao.js";
 const userDao = new UserDaoMongoDB();
 
-const SECRET_KEY_JWT = process.env.SECRET_KEY_JWT;
 export default class UserService extends Services {
     constructor() {
         super(userDao);
-    }
-
-    // numeral para hacerlo privado
-    #generateToken(user) {
-        const payload = {
-            userId: user._id,
-        };
-        return jwt.sign(payload, SECRET_KEY_JWT, { expiresIn: "10m" });
     }
 
     async register(user) {
@@ -32,15 +22,15 @@ export default class UserService extends Services {
         }
     }
 
-    async login(user) {
+    async login(email, password) {
         try {
             console.log("desde service: ", email, password);
-            const userExist = await userDao.loginUser(user);
+            const userExist = await userDao.loginUser(email, password);
             if (!userExist) {
                 return false;
-            } else {
-                return this.#generateToken(userExist);
             }
+            const access_token = generateToken(userExist);
+            return { user: userExist, access_token };
         } catch (error) {
             console.error("Error in login service:", error);
             throw error;
@@ -53,6 +43,7 @@ export default class UserService extends Services {
             return response;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 }

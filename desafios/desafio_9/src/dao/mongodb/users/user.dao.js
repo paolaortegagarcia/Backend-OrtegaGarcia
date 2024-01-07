@@ -70,10 +70,12 @@ export default class UserDaoMongoDB extends MongoDao {
         }
     }
 
-    async loginUser(user) {
+    async loginUser(email, password) {
         try {
-            const { email, password } = user;
+            console.log("entro en el login dao", email, password);
+            //const { email, password } = user;
             const userExists = await this.findByEmail(email);
+            console.log(userExists);
 
             if (!userExists) {
                 return false;
