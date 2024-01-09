@@ -12,6 +12,8 @@ router.post(
     controller.register
 );
 router.post("/login", passport.authenticate("loginStrategy"), controller.login);
+router.get("/private", passport.authenticate("jwt"), controller.profile);
+router.get("/current", passport.authenticate("jwtCookies"), controller.current);
 router.post("/logout", controller.logout);
 router.get("/authenticationError", controller.renderAuthenticationError);
 router.get(
@@ -23,7 +25,5 @@ router.get(
     passport.authenticate("github", { scope: ["user:email"] }),
     controller.githubResponse
 );
-
-router.get("/current", verifyToken, controller.profile);
 
 export default router;

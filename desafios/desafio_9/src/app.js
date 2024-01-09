@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import handlebars from "express-handlebars";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import { __dirname, mongoStoreOptions } from "./utils.js";
 import ApiRoutes from "./routes/index.routes/api.router.js";
 import renderRoutes from "./routes/index.routes/render.router.js";
@@ -11,10 +12,11 @@ import socketConfig from "./socket/socket.js";
 import "./passport/local-strategy.js";
 import passport from "passport";
 import "./passport/github-strategy.js";
+import "./passport/jwt-strategy.js";
 import "dotenv/config";
 const apiRoutes = new ApiRoutes();
 
-/* --------------------------------- Express / Passport -------------------------------- */
+/* --------------------------------- Express / Passport / Cookies -------------------------------- */
 
 const app = express();
 app.use(express.json());
@@ -26,6 +28,7 @@ app.use(session(mongoStoreOptions));
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(cookieParser());
 
 /* --------------------------------- Routers -------------------------------- */
 

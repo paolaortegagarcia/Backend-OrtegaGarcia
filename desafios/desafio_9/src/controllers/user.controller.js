@@ -32,9 +32,9 @@ export default class UserController extends Controllers {
                     "User not found or invalid credentials"
                 );
             } else {
-                res.header("Authorization", access_token).json({
+                //res.header("Authorization", access_token)
+                res.cookie("token", access_token, { httpOnly: true }).json({
                     msg: "Login OK",
-                    user,
                     access_token,
                 });
             }
@@ -78,13 +78,30 @@ export default class UserController extends Controllers {
     }
 
     async profile(req, res, next) {
+        const { userId } = req.user;
+        const user = await userService.getById(userId);
+        if (!user) res.send("Not found");
+        else {
+            const { first_name, last_name, email, role } = user;
+            res.json({
+                status: "success",
+                userData: {
+                    first_name,
+                    last_name,
+                    email,
+                    role,
+                },
+            });
+        }
+    }
+
+    async current(req, res, next) {
         try {
-            const { first_name, last_name, email, role } = req.user;
-            createResponse(res, 200, {
-                first_name,
-                last_name,
-                email,
-                role,
+            const user = req.user;
+            const token = req.cookies.token;
+            res.json({
+                user,
+                token,
             });
         } catch (error) {
             next(error.message);
