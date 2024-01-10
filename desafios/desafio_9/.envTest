@@ -2,3 +2,5 @@ ATLAS_MONGO_URL = ""
 PORT = 8080
 PERSISTENCE = "MONGO"
 SECRET_KEY_JWT = Number
+NODE_ENV = "dev"
+APP = "http://localhost:8080"

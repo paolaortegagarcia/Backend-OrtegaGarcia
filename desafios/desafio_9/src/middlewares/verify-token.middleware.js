@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import UserDaoMongoDB from "../dao/mongodb/users/user.dao.js";
+import UserDaoMongoDB from "../persistence/dao/mongodb/users/user.dao.js";
 const userDao = new UserDaoMongoDB();
 import "dotenv/config";
 

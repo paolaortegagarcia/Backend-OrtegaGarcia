@@ -1,6 +1,6 @@
-import FSDao from "./fs.dao";
+import FSDao from "./fs.dao.js";
 
-export class CartDaoFS extends FSDao {
+export default class CartDaoFS extends FSDao {
     constructor(path) {
         super(path);
     }

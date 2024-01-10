@@ -1,6 +1,6 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import { atlasConnectionString } from "./config/connection.js";
+import config from "./config/config.js";
 import MongoStore from "connect-mongo";
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -8,7 +8,7 @@ export const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const mongoStoreOptions = {
     store: MongoStore.create({
-        mongoUrl: atlasConnectionString,
+        mongoUrl: config.ATLAS_MONGO_URL,
         ttl: 120,
         crypto: {
             secret: "1234",
@@ -50,3 +50,21 @@ export const isValidPass = (password, user) => {
 export const createResponse = (res, statusCode, data) => {
     return res.status(statusCode).json({ data });
 };
+
+/* --------------------------------- Cálculo No Bloqueante -------------------------------- */
+
+export const calculo = () => {
+    let sum = 0;
+    for (let i = 0; i <= 15006500445; i++) {
+        sum += i;
+    }
+    return sum;
+};
+
+process.on("message", (msg) => {
+    if (msg == "start") {
+        console.log(`Start calculo, PID: ${process.pid}`);
+        const sum = calculo();
+        process.send(sum);
+    }
+});

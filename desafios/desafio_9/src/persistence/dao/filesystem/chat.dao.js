@@ -1,5 +1,6 @@
 import fs from "fs";
-import FSDao from "./fs.dao";
+import FSDao from "./fs.dao.js";
+
 export default class ChatDaoFS extends FSDao {
     constructor(path) {
         super(path);

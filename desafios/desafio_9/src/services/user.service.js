@@ -1,7 +1,7 @@
 import Services from "./class.service.js";
 import { generateToken } from "../jwt/auth.js";
-import UserDaoMongoDB from "../dao/mongodb/users/user.dao.js";
-const userDao = new UserDaoMongoDB();
+import persistence from "../persistence/persistence.js";
+const { userDao } = persistence;
 
 export default class UserService extends Services {
     constructor() {

@@ -3,7 +3,7 @@ import MongoDao from "../mongo.dao.js";
 import { ProductModel } from "./product.model.js";
 import { CartModel } from "../carts/cart.model.js";
 
-export class ProductDaoMongoDB extends MongoDao {
+export default class ProductDaoMongoDB extends MongoDao {
     constructor() {
         super(ProductModel); // para llamar al constructor de mongodao - le paso el modelo que quiero
     }

@@ -1,13 +1,40 @@
-import mongoose from "mongoose";
-import "dotenv/config";
+import { connect } from "mongoose";
+import config from "../../../desafio_9/src/config/config.js";
 
-export const atlasConnectionString = process.env.ATLAS_MONGO_URL;
+let MONGO_URL = "";
 
-export const initMongoDB = async () => {
-    try {
-        await mongoose.connect(atlasConnectionString);
-        console.log("🚁 Connected to the MongoDB database");
-    } catch (error) {
-        console.log(`ERROR => ${error}`);
+if (config.PERSISTENCE === "MONGO") {
+    switch (config.NODE_ENV) {
+        case "dev":
+            MONGO_URL = config.ATLAS_MONGO_URL;
+            console.log("desde connection.js =", "Mongo Atlas");
+            break;
+        case "qa":
+            MONGO_URL = config.LOCAL_MONGO_URL;
+            console.log("desde connection.js =", "Mongo Local");
+            break;
+        default:
+            MONGO_URL = config.ATLAS_MONGO_URL;
+            console.log("desde connection.js =", "Mongo Atlas");
+            break;
     }
-};
+}
+
+export class initMongoDB {
+    static #instance;
+
+    constructor() {
+        connect(MONGO_URL);
+    }
+
+    static getInstance() {
+        if (this.#instance) {
+            console.log("Ya está conectado a MongoDB");
+            return this.#instance;
+        } else {
+            this.#instance = new initMongoDB();
+            console.log("Conectado a MongoDB!");
+            return this.#instance;
+        }
+    }
+}
