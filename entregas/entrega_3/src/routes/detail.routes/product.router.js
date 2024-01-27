@@ -17,15 +17,18 @@ router.get("/all", controller.getAll); // sin queries
 
 /* ---------------------------------- CRUD ---------------------------------- */
 
-router.post("/add/:id/:id", roleUser, controller.addProductToCart);
+router.post(
+    "/add/:cartId/:productId",
+    /* roleUser, */ controller.addProductToCart
+);
 
 router.get("/:id", controller.getById);
 
-router.post("/", roleAdmin, productValidator, controller.create);
+router.post("/", /* roleAdmin, */ productValidator, controller.create);
 
-router.put("/:id", roleAdmin, controller.update);
+router.put("/:id", /* roleAdmin, */ controller.update);
 
-router.delete("/:id", roleAdmin, controller.delete);
+router.delete("/:id", /* roleAdmin, */ controller.delete);
 
 router.get("/dto/:id", controller.getProdById);
 

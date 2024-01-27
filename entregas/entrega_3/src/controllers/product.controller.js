@@ -13,7 +13,8 @@ export default class ProductController extends Controllers {
     async addProductToCart(req, res, next) {
         try {
             const { cartId, productId } = req.params;
-            const newProduct = await service.addProductToCart(
+            console.log("desde controller", cartId, productId);
+            const newProduct = await productService.addProductToCart(
                 cartId,
                 productId
             );

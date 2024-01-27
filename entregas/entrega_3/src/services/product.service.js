@@ -13,7 +13,8 @@ export default class ProductService extends Services {
 
     async addProductToCart(cartId, productId) {
         try {
-            const exists = await prodDao.getProductsById(productId);
+            console.log("entro al service add to cart", cartId, productId);
+            const exists = await prodDao.getById(productId);
             const newProduct = await prodDao.addProductToCart(
                 cartId,
                 productId
