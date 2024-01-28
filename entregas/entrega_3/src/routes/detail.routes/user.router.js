@@ -24,7 +24,8 @@ TODO: CORREGIR RUTAS DE JWT
 router.get("/private", passport.authenticate("jwt"), controller.profile);
 router.get("/current", passport.authenticate("jwtCookies"), controller.current);
 
- */
+*/
+
 router.post("/logout", controller.logout);
 router.get("/authenticationError", controller.renderAuthenticationError);
 router.get(

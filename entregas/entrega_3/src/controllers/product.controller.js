@@ -32,7 +32,7 @@ export default class ProductController extends Controllers {
     async getProductsQueries(req, res, next) {
         try {
             const { page, limit, category, sort } = req.query;
-            const response = await service.getProducts(
+            const response = await productService.getProductsQueries(
                 page,
                 limit,
                 category,
@@ -69,7 +69,7 @@ export default class ProductController extends Controllers {
 
     /* ----------------------------------- DTO ---------------------------------- */
 
-    getProdById = async (req, res, next) => {
+    async getProdById(req, res, next) {
         try {
             const { id } = req.params;
             const prod = await this.service.getProdById(id);
@@ -82,9 +82,9 @@ export default class ProductController extends Controllers {
         } catch (error) {
             next(error.message);
         }
-    };
+    }
 
-    createProd = async (req, res, next) => {
+    async createProd(req, res, next) {
         try {
             const newItem = await this.service.createProd(req.body);
             if (!newItem)
@@ -96,5 +96,5 @@ export default class ProductController extends Controllers {
         } catch (error) {
             next(error.message);
         }
-    };
+    }
 }

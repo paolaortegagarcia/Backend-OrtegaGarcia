@@ -22,6 +22,7 @@ export default class CartController extends Controllers {
     async updateCart(req, res, next) {
         try {
             const { cartId } = req.params;
+            console.log("en el controller", cartId);
             const updatedProducts = req.body.products;
             const updatedCart = await cartService.updateCart(
                 cartId,

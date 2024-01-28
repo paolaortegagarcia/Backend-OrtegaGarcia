@@ -34,7 +34,7 @@ export default class Services {
     update = async (id, obj) => {
         try {
             const item = await this.dao.getById(id);
-            if (item) return false;
+            if (!item) return false;
             else return await this.dao.update(id, obj);
         } catch (error) {
             console.log(error);

@@ -24,7 +24,7 @@ router.post(
 
 router.get("/:id", controller.getById);
 
-router.post("/", /* roleAdmin, */ productValidator, controller.create);
+router.post("/", roleAdmin, productValidator, controller.create);
 
 router.put("/:id", /* roleAdmin, */ controller.update);
 

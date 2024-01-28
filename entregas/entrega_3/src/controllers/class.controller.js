@@ -17,7 +17,6 @@ export default class Controllers {
     getById = async (req, res, next) => {
         try {
             const { id } = req.params;
-            console.log(id);
             const item = await this.service.getById(id);
             if (!item)
                 createResponse(res, 404, {
@@ -70,7 +69,10 @@ export default class Controllers {
                     error: "Error - the item could not be deleted",
                 });
             const itemUpd = await this.service.delete(id);
-            createResponse(res, 200, itemUpd);
+            createResponse(res, 200, {
+                itemUpd,
+                msg: `Cart ID ${id} deleted successfully`,
+            });
         } catch (error) {
             next(error.message);
         }
