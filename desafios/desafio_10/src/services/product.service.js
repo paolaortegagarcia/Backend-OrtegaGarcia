@@ -2,11 +2,28 @@ import Services from "./class.service.js";
 import factory from "../persistence/factory.js";
 const { prodDao } = factory;
 import ProductRepository from "../persistence/repository/product.repository.js";
+import { generateProduct } from "../utils.js";
 const prodRepository = new ProductRepository();
 
 export default class ProductService extends Services {
     constructor() {
         super(prodDao);
+    }
+
+    /* ---------------------------------- Mock ---------------------------------- */
+
+    async createMocksProducts(cant = 100) {
+        try {
+            const productsArray = [];
+            for (let i = 0; i < cant; i++) {
+                const product = generateProduct();
+                productsArray.push(product);
+            }
+            const products = await prodDao.create(productsArray);
+            return products;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     /* ---------------------------------- Unión con el Cart --------------------------------- */

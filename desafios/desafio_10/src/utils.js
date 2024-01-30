@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import config from "./config/config.js";
 import MongoStore from "connect-mongo";
 export const __dirname = dirname(fileURLToPath(import.meta.url));
+import { es, fakerES } from "@faker-js/faker";
 
 /* -------------------------------- MongoStore ------------------------------- */
 
@@ -72,3 +73,19 @@ process.on("message", (msg) => {
         process.send(sum);
     }
 });
+
+/* --------------------------------- Mocking -------------------------------- */
+import { v4 as uuidv4 } from "uuid";
+
+export const generateProduct = () => {
+    return {
+        name: fakerES.commerce.productName(),
+        description: fakerES.commerce.productDescription(),
+        price: fakerES.commerce.price(),
+        stock: fakerES.number.int({ min: 0, max: 100 }),
+        code: uuidv4(),
+        category: fakerES.commerce.productAdjective(),
+    };
+};
+
+//console.log(generateProduct());

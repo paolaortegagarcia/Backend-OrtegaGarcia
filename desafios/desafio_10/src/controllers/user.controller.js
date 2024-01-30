@@ -1,6 +1,8 @@
 import Controllers from "./class.controller.js";
 import UserService from "../services/user.service.js";
 import { createResponse } from "../utils.js";
+import { HttpResponse, errorsDictionary } from "../http.response.js";
+const httpResponse = new HttpResponse();
 const userService = new UserService();
 
 export default class UserController extends Controllers {
@@ -10,10 +12,7 @@ export default class UserController extends Controllers {
 
     async register(req, res, next) {
         try {
-            res.json({
-                msg: "Register ok!",
-                session: req.session,
-            });
+            httpResponse.Ok(res, { session: req.session });
         } catch (error) {
             next(error.message);
         }
@@ -26,11 +25,7 @@ export default class UserController extends Controllers {
                 req.body.password
             );
             if (!user) {
-                createResponse(
-                    res,
-                    401,
-                    "User not found or invalid credentials"
-                );
+                httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
             } else {
                 //res.header("Authorization", access_token)
                 res.cookie("token", access_token, { httpOnly: true }).json({
@@ -39,7 +34,7 @@ export default class UserController extends Controllers {
                 });
             }
         } catch (error) {
-            console.error("Error in login method:", error);
+            httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
             next(error.message);
         }
     }
@@ -69,7 +64,7 @@ export default class UserController extends Controllers {
                 },
             });
         } catch (error) {
-            next(error.message);
+            httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
         }
     }
 
@@ -112,11 +107,8 @@ export default class UserController extends Controllers {
             console.log("respuesta desde controller", user);
             console.log(user);
             if (!user)
-                createResponse(res, 404, {
-                    method: "create",
-                    error: "getById failed",
-                });
-            else createResponse(res, 200, user);
+                httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
+            else httpResponse.Ok(res, user);
         } catch (error) {
             next(error.message);
         }

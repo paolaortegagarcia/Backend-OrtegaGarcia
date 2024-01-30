@@ -1,5 +1,7 @@
 import Controllers from "./class.controller.js";
 import CartService from "../services/cart.service.js";
+import { HttpResponse, errorsDictionary } from "../http.response.js";
+const httpResponse = new HttpResponse();
 const cartService = new CartService();
 
 export default class CartController extends Controllers {
@@ -11,7 +13,7 @@ export default class CartController extends Controllers {
         try {
             const { cartId, productId } = req.params;
             await cartService.deleteProductFromCart(cartId, productId);
-            res.status(200).json({
+            httpResponse.Ok(res, {
                 msg: `Product ID ${productId} deleted successfully`,
             });
         } catch (error) {

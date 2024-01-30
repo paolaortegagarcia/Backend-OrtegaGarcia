@@ -9,6 +9,10 @@ const controller = new ProductController();
 
 const router = Router();
 
+/* ---------------------------------- Mock ---------------------------------- */
+
+router.post("/mockingproducts", controller.createMocksProducts);
+
 /* ---------------------------------- Get All ---------------------------------- */
 
 //router.get("/all", controller.getProductsQueries); // implemento las queries y aggregations

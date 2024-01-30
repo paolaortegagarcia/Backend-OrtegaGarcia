@@ -8,6 +8,18 @@ export default class ProductController extends Controllers {
         super(productService);
     }
 
+    /* ---------------------------------- Mock ---------------------------------- */
+
+    async createMocksProducts(req, res, next) {
+        try {
+            const { cant } = req.query;
+            const response = await productService.createMocksProducts(cant);
+            return createResponse(res, 200, response);
+        } catch (error) {
+            next(error.menssage);
+        }
+    }
+
     /* ---------------------------------- Unión con el Cart --------------------------------- */
 
     async addProductToCart(req, res, next) {
