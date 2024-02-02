@@ -1,5 +1,7 @@
+import { logger } from "../utils/logger.js";
+
 export const errorHandler = (error, req, res, next) => {
-    console.log(`error ${error.message}`);
+    logger.error(`Error = ${error}`);
     const status = error.statusCode || 500;
     res.status(status).send(error.message);
 };

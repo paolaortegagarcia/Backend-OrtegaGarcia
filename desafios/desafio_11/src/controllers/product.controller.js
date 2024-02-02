@@ -1,7 +1,8 @@
 import Controllers from "./class.controller.js";
 import ProductService from "../services/product.service.js";
+import { logger } from "../utils/logger.js";
 const productService = new ProductService();
-import { createResponse } from "../utils.js";
+import { createResponse } from "../utils/utils.js";
 
 export default class ProductController extends Controllers {
     constructor() {
@@ -16,6 +17,7 @@ export default class ProductController extends Controllers {
             const response = await productService.createMocksProducts(cant);
             return createResponse(res, 200, response);
         } catch (error) {
+            logger.error(`Error en createMocksProducts = ${error}`);
             next(error.menssage);
         }
     }
@@ -25,16 +27,17 @@ export default class ProductController extends Controllers {
     async addProductToCart(req, res, next) {
         try {
             const { cartId, productId } = req.params;
-            console.log("desde controller", cartId, productId);
+            logger.info(`desde controller, ${cartId}, ${productId}`);
             const newProduct = await productService.addProductToCart(
                 cartId,
                 productId
             );
-            console.log(newProduct);
+            logger.info(newProduct);
             if (!newProduct)
                 res.status(404).json({ msg: "Error adding the product" });
             else res.status(200).json(newProduct);
         } catch (error) {
+            logger.error(`Error en addProductToCart = ${error}`);
             next(error.message);
         }
     }
@@ -75,6 +78,7 @@ export default class ProductController extends Controllers {
                 },
             });
         } catch (error) {
+            logger.error(`Error en getProductsQueries = ${error}`);
             next(error.message);
         }
     }
@@ -92,6 +96,7 @@ export default class ProductController extends Controllers {
                 });
             else createResponse(res, 200, prod);
         } catch (error) {
+            logger.error(`Error en getProdById = ${error}`);
             next(error.message);
         }
     }
@@ -106,6 +111,7 @@ export default class ProductController extends Controllers {
                 });
             else createResponse(res, 200, newItem);
         } catch (error) {
+            logger.error(`Error en createProd = ${error}`);
             next(error.message);
         }
     }

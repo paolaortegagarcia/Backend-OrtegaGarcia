@@ -1,3 +1,5 @@
+import { logger } from "../utils/logger.js";
+
 export default class Services {
     constructor(dao) {
         this.dao = dao;
@@ -7,7 +9,7 @@ export default class Services {
         try {
             return this.dao.getAll();
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en getAll = ${error}`);
         }
     };
 
@@ -17,7 +19,7 @@ export default class Services {
             if (!item) return false;
             else return item;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en getById = ${error}`);
         }
     };
 
@@ -27,7 +29,7 @@ export default class Services {
             if (!newItem) return false;
             else return newItem;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en create = ${error}`);
         }
     };
 
@@ -37,7 +39,7 @@ export default class Services {
             if (!item) return false;
             else return await this.dao.update(id, obj);
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en update = ${error}`);
         }
     };
 
@@ -45,7 +47,7 @@ export default class Services {
         try {
             return await this.dao.delete(id);
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en delete = ${error}`);
         }
     };
 }

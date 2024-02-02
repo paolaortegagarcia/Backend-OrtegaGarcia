@@ -1,5 +1,5 @@
 import MongoDao from "../mongo.dao.js";
-
+import { logger } from "../../../../utils/logger.js";
 import { ProductModel } from "./product.model.js";
 import { CartModel } from "../carts/cart.model.js";
 
@@ -37,7 +37,7 @@ export default class ProductDaoMongoDB extends MongoDao {
             await cart.save();
             return cart;
         } catch (error) {
-            console.log(error);
+            logger.error("Error en addProductToCart", error);
         }
     }
 
@@ -63,7 +63,7 @@ export default class ProductDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            console.log(error);
+            logger.error("Error en getProductsQueries", error);
             return [];
         }
     }

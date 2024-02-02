@@ -1,4 +1,4 @@
-import { createResponse } from "../utils.js";
+import { createResponse } from "../utils/utils.js";
 
 export default class Controllers {
     constructor(service) {
@@ -10,6 +10,7 @@ export default class Controllers {
             const items = await this.service.getAll();
             createResponse(res, 200, items);
         } catch (error) {
+            logger.error(`Error en getAll = ${error}`);
             next(error.message);
         }
     };
@@ -25,6 +26,7 @@ export default class Controllers {
                 });
             else createResponse(res, 200, item);
         } catch (error) {
+            logger.error(`Error en getById = ${error}`);
             next(error.message);
         }
     };
@@ -39,6 +41,7 @@ export default class Controllers {
                 });
             else createResponse(res, 200, newItem);
         } catch (error) {
+            logger.error(`Error en create = ${error}`);
             next(error.message);
         }
     };
@@ -55,6 +58,7 @@ export default class Controllers {
             const itemUpd = await this.service.update(id, req.body);
             createResponse(res, 200, itemUpd);
         } catch (error) {
+            logger.error(`Error en update = ${error}`);
             next(error.message);
         }
     };
@@ -74,6 +78,7 @@ export default class Controllers {
                 msg: `Cart ID ${id} deleted successfully`,
             });
         } catch (error) {
+            logger.error(`Error en delete = ${error}`);
             next(error.message);
         }
     };

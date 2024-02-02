@@ -1,7 +1,7 @@
 import Controllers from "./class.controller.js";
 import UserService from "../services/user.service.js";
-import { createResponse } from "../utils.js";
-import { HttpResponse, errorsDictionary } from "../http.response.js";
+import { HttpResponse, errorsDictionary } from "../utils/http.response.js";
+import { logger } from "../utils/logger.js";
 const httpResponse = new HttpResponse();
 const userService = new UserService();
 
@@ -14,7 +14,8 @@ export default class UserController extends Controllers {
         try {
             httpResponse.Ok(res, { session: req.session });
         } catch (error) {
-            next(error.message);
+            logger.error(`Error en register = ${error}`);
+            next(error.menssage);
         }
     }
 
@@ -35,6 +36,7 @@ export default class UserController extends Controllers {
             }
         } catch (error) {
             httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
+            logger.error(`Error en login = ${error}`);
             next(error.message);
         }
     }
@@ -42,17 +44,17 @@ export default class UserController extends Controllers {
     async logout(req, res) {
         try {
             req.session.destroy();
-            console.log("Session after logout:", req.session);
+            logger.info(`Session after logout: ${req.session}`);
             res.redirect("/login");
         } catch (error) {
-            console.error("Error during logout:", error);
+            logger.error(`Error en logout = ${error}`);
             res.status(500).send("Internal Server Error");
         }
     }
 
     async githubResponse(req, res, next) {
         try {
-            console.log(req.user);
+            logger.info(req.user);
             const { first_name, email, isGithub } = req.user;
             res.json({
                 msg: "Register/Login Github ok",
@@ -64,6 +66,7 @@ export default class UserController extends Controllers {
                 },
             });
         } catch (error) {
+            logger.error(`Error en githubResponse = ${error}`);
             httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
         }
     }
@@ -94,6 +97,7 @@ export default class UserController extends Controllers {
                 token,
             });
         } catch (error) {
+            logger.error(`Error en current = ${error}`);
             next(error.message);
         }
     }
@@ -104,12 +108,13 @@ export default class UserController extends Controllers {
         try {
             const { id } = req.user;
             const user = await userService.getUserById(id);
-            console.log("respuesta desde controller", user);
-            console.log(user);
+            logger.info(`respuesta desde controller, ${user}`);
+            logger.info(user);
             if (!user)
                 httpResponse.Unauthorized(res, errorsDictionary.ERROR_LOGIN);
             else httpResponse.Ok(res, user);
         } catch (error) {
+            logger.error(`Error en getUserById = ${error}`);
             next(error.message);
         }
     };

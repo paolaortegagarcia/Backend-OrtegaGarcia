@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import handlebars from "express-handlebars";
 import session from "express-session";
-import { __dirname, mongoStoreOptions } from "./utils.js";
+import { __dirname, mongoStoreOptions } from "./utils/utils.js";
 import ApiRoutes from "./routes/index.routes/api.router.js";
 import renderRoutes from "./routes/index.routes/render.router.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";

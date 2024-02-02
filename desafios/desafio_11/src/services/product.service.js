@@ -2,7 +2,8 @@ import Services from "./class.service.js";
 import factory from "../persistence/factory.js";
 const { prodDao } = factory;
 import ProductRepository from "../persistence/repository/product.repository.js";
-import { generateProduct } from "../utils.js";
+import { generateProduct } from "../utils/utils.js";
+import { logger } from "../utils/logger.js";
 const prodRepository = new ProductRepository();
 
 export default class ProductService extends Services {
@@ -22,7 +23,7 @@ export default class ProductService extends Services {
             const products = await prodDao.create(productsArray);
             return products;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en createMocksProducts = ${error}`);
         }
     }
 
@@ -30,7 +31,9 @@ export default class ProductService extends Services {
 
     async addProductToCart(cartId, productId) {
         try {
-            console.log("entro al service add to cart", cartId, productId);
+            logger.info(
+                `entro al service add to cart, ${cartId}. ${productId}`
+            );
             const exists = await prodDao.getById(productId);
             const newProduct = await prodDao.addProductToCart(
                 cartId,
@@ -39,7 +42,7 @@ export default class ProductService extends Services {
             if (!exists) throw new Error("Product not found");
             return newProduct;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en addProductToCart = ${error}`);
         }
     }
 
@@ -54,7 +57,7 @@ export default class ProductService extends Services {
                 sort
             );
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en getProductsQueries = ${error}`);
         }
     }
 
@@ -66,6 +69,7 @@ export default class ProductService extends Services {
             if (!prod) return false;
             else return prod;
         } catch (error) {
+            logger.error(`Error en getProdById = ${error}`);
             throw new Error(error.message);
         }
     }
@@ -76,7 +80,7 @@ export default class ProductService extends Services {
             if (!newItem) return false;
             else return newItem;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en createProd = ${error}`);
         }
     }
 }

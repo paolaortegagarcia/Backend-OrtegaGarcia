@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { template } from "../services/email-templates/template.js";
 import { transporter } from "../services/email.service.js";
+import { logger } from "../utils/logger.js";
 
 export const sendGmail = async (req, res) => {
     try {
@@ -24,6 +25,7 @@ export const sendGmail = async (req, res) => {
         const response = await transporter.sendMail(gmailOptions);
         res.json(response);
     } catch (error) {
-        console.log(error);
+        logger.error(`Error en sendGmail = ${error}`);
+        next(error.menssage);
     }
 };

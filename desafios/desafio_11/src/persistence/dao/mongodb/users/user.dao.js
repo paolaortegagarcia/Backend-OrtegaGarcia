@@ -1,4 +1,5 @@
-import { createHash, isValidPass } from "../../../../utils.js";
+import { createHash, isValidPass } from "../../../../utils/utils.js";
+import { logger } from "../../../../utils/logger.js";
 import MongoDao from "../mongo.dao.js";
 import { UserModel } from "./user.model.js";
 
@@ -13,7 +14,7 @@ export default class UserDaoMongoDB extends MongoDao {
 
     async registerUser(user) {
         try {
-            console.log("Entered registerUser method");
+            logger.info("Entered registerUser method");
             const { email, password } = user;
 
             if (
@@ -35,17 +36,17 @@ export default class UserDaoMongoDB extends MongoDao {
                         password: createHash(password),
                     });
 
-                    console.log("After UserModel.create");
+                    logger.info("After UserModel.create");
                     return newUser;
                 } catch (error) {
-                    console.error("Error during UserModel.create:", error);
+                    logger.error("Error en userExists", error);
                     throw error;
                 }
             } else {
                 return false;
             }
         } catch (error) {
-            console.error("Error in registerUser method:", error);
+            userExists;
             throw error;
         }
     }
@@ -65,23 +66,23 @@ export default class UserDaoMongoDB extends MongoDao {
                 return false;
             }
         } catch (error) {
-            console.log(error);
+            logger.error("Error en registerUserGithub", error);
             throw error;
         }
     }
 
     async loginUser(email, password) {
         try {
-            console.log("entro en el login dao", email, password);
+            logger.info("entro en el login dao", email, password);
             //const { email, password } = user;
             const userExists = await this.findByEmail(email);
-            console.log(userExists);
+            logger.info(userExists);
 
             if (!userExists) {
                 return false;
             } else {
                 const isValidPassword = isValidPass(password, userExists);
-                console.log("valid dao: ", isValidPassword);
+                logger.info("valid dao: ", isValidPassword);
                 if (!isValidPassword) {
                     return false;
                 } else {
@@ -89,7 +90,7 @@ export default class UserDaoMongoDB extends MongoDao {
                 }
             }
         } catch (error) {
-            console.log(error);
+            logger.error("Error en loginUser", error);
         }
     }
 }

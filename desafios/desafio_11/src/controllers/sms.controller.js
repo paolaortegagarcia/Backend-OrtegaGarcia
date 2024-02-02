@@ -1,5 +1,6 @@
 import { twilioClient } from "../services/sms.service.js";
 import "dotenv/config";
+import { logger } from "../utils/logger.js";
 
 export const sendSms = async (req, res) => {
     try {
@@ -14,6 +15,7 @@ export const sendSms = async (req, res) => {
         const response = await twilioClient.messages.create(msg);
         res.json(response);
     } catch (error) {
-        console.log(error);
+        logger.error(`Error en sendSms = ${error}`);
+        next(error.menssage);
     }
 };

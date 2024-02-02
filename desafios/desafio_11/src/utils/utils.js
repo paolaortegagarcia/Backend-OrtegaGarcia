@@ -4,7 +4,7 @@ TODO: Separarlo en varios archivos y crear una carpeta utils - ver la clase 30 p
 
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import config from "./config/config.js";
+import config from "../config/config.js";
 import MongoStore from "connect-mongo";
 export const __dirname = dirname(fileURLToPath(import.meta.url));
 import { es, fakerES } from "@faker-js/faker";

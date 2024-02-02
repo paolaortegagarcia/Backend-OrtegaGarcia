@@ -19,14 +19,14 @@ export default class UserService extends Services {
                 return response;
             }
         } catch (error) {
-            console.error("Error in register service:", error);
+            logger.error(`Error en register, ${error}`);
             throw error;
         }
     }
 
     async login(email, password) {
         try {
-            console.log("desde service: ", email, password);
+            logger.info(`desde service: ${email}, ${password} `);
             const userExist = await userDao.loginUser(email, password);
             if (!userExist) {
                 return false;
@@ -34,7 +34,7 @@ export default class UserService extends Services {
             const access_token = generateToken(userExist);
             return { user: userExist, access_token };
         } catch (error) {
-            console.error("Error in login service:", error);
+            logger.error(`Error en login = ${error}`);
             throw error;
         }
     }
@@ -44,7 +44,7 @@ export default class UserService extends Services {
             const response = await userDao.getById(id);
             return response;
         } catch (error) {
-            console.log(error);
+            logger.error(`Error en getById = ${error}`);
             throw error;
         }
     }
@@ -54,10 +54,11 @@ export default class UserService extends Services {
     async getUserById(id) {
         try {
             const user = await userRepository.getUserById(id);
-            console.log("respuesta desde service", user);
+            logger.info(`respuesta desde service, ${user}`);
             if (!user) return false;
             else return user;
         } catch (error) {
+            logger.error(`Error en getUserById = ${error}`);
             throw new Error(error.message);
         }
     }

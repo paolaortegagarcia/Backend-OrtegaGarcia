@@ -1,4 +1,4 @@
-import { createResponse } from "../utils.js";
+import { createResponse } from "../utils/utils.js";
 import factory from "../persistence/factory.js";
 const { userDao } = factory;
 

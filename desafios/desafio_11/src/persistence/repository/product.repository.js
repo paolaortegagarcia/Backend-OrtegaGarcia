@@ -2,6 +2,7 @@ import factory from "../factory.js";
 const { prodDao } = factory;
 import ProductResDTO from "../dto/product-res.dto.js";
 import ProductReqDTO from "../dto/product-req.dto.js";
+import { logger } from "../../utils/logger.js";
 
 export default class ProductRepository {
     constructor() {
@@ -14,6 +15,7 @@ export default class ProductRepository {
             const prod = await this.dao.getById(id);
             return new ProductResDTO(prod);
         } catch (error) {
+            logger.error("Error en getProdById", error);
             throw new Error(error.message);
         }
     }
@@ -24,7 +26,7 @@ export default class ProductRepository {
             const response = await this.dao.create(prodDTO);
             return response;
         } catch (error) {
-            console.log(error);
+            logger.error("Error en createProd", error);
         }
     }
 }

@@ -1,5 +1,6 @@
 import { CartModel } from "./cart.model.js";
 import MongoDao from "../mongo.dao.js";
+import { logger } from "../../../../utils/logger.js";
 
 export default class CartDaoMongoDB extends MongoDao {
     constructor() {
@@ -15,7 +16,7 @@ export default class CartDaoMongoDB extends MongoDao {
             const response = await CartModel.create(cart);
             return response;
         } catch (error) {
-            console.log(error);
+            logger.error("Error en createCart", error);
         }
     }
 
@@ -27,7 +28,7 @@ export default class CartDaoMongoDB extends MongoDao {
             });
             return response;
         } catch (error) {
-            console.error(error);
+            logger.error("Error en getCartById", error);
         }
     }
 
@@ -44,7 +45,7 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            console.error(error);
+            logger.error("Error en deleteProductFromCart", error);
         }
     }
 
@@ -57,7 +58,7 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            console.error(error);
+            logger.error("Error en updateCart", error);
         }
     }
 
@@ -74,7 +75,7 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            console.error(error);
+            logger.error("Error en updateProductQuantity", error);
         }
     }
 
@@ -87,7 +88,7 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response || null;
         } catch (error) {
-            console.error(error);
+            logger.error("Error en deleteAllProductsFromCart", error);
         }
     }
 }

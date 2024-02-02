@@ -10,6 +10,7 @@ import noBloqueanteRouter from "../detail.routes/no-bloqueante.router.js";
 import emailRouter from "../detail.routes/email.router.js";
 import messageRouter from "../detail.routes/message.router.js";
 import ticketRouter from "../detail.routes/ticket.router.js";
+import loggerRouter from "../detail.routes/logger.router.js";
 
 export default class ApiRoutes {
     constructor() {
@@ -26,6 +27,7 @@ export default class ApiRoutes {
         this.router.use("/email", emailRouter);
         this.router.use("/message", messageRouter);
         this.router.use("/ticket", ticketRouter);
+        this.router.use("/loggertest", loggerRouter);
     }
 
     getRouter() {

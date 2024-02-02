@@ -1,4 +1,5 @@
 import config from "../config/config.js";
+import { logger } from "../utils/logger.js";
 /* ---------------------------------- Mongo --------------------------------- */
 import { initMongoDB } from "../config/connection.js";
 import UserDaoMongoDB from "./dao/mongodb/users/user.dao.js";
@@ -32,7 +33,7 @@ switch (persistence) {
         chatDao = new ChatDaoFS(
             "./src/persistence/dao/filesystem/db/chats.json"
         );
-        console.log("desde factory.js =", persistence);
+        logger.info(`desde factory.js = ${persistence}`);
         break;
     case "MONGO":
         initMongoDB.getInstance(); // patron singleton
@@ -41,7 +42,7 @@ switch (persistence) {
         chatDao = new ChatDaoMongoDB();
         userDao = new UserDaoMongoDB();
         ticketDao = new TicketDaoMongoDB();
-        console.log("desde factory.js =", persistence);
+        logger.info(`desde factory.js = ${persistence}`);
         break;
     default:
         prodDao = new ProductDaoFS(
@@ -53,7 +54,7 @@ switch (persistence) {
         chatDao = new ChatDaoFS(
             "./src/persistence/dao/filesystem/db/chats.json"
         );
-        console.log("desde persistence.js =", persistence);
+        logger.info(`desde factory.js = ${persistence}`);
         break;
 }
 

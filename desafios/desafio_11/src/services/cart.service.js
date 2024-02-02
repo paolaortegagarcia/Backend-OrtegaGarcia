@@ -1,5 +1,6 @@
 import Services from "./class.service.js";
 import factory from "../persistence/factory.js";
+import { logger } from "../utils/logger.js";
 const { cartDao } = factory;
 
 export default class CartService extends Services {
@@ -15,7 +16,7 @@ export default class CartService extends Services {
             );
             return updatedCart;
         } catch (error) {
-            console.error(error);
+            logger.error(`Error en deleteProductFromCart = ${error}`);
         }
     }
 
@@ -27,7 +28,7 @@ export default class CartService extends Services {
             );
             return updatedCart;
         } catch (error) {
-            console.error(error);
+            logger.error(`Error en updateCart = ${error}`);
         }
     }
 
@@ -40,7 +41,7 @@ export default class CartService extends Services {
             );
             return updatedCart;
         } catch (error) {
-            console.error(error);
+            logger.error(`Error en updateProductQuantity = ${error}`);
         }
     }
 
@@ -49,7 +50,7 @@ export default class CartService extends Services {
             const updatedCart = await cartDao.deleteAllProductsFromCart(cartId);
             return updatedCart;
         } catch (error) {
-            console.error(error);
+            logger.error(`Error en deleteAllProductsFromCart = ${error}`);
         }
     }
 }
