@@ -1,6 +1,6 @@
 import { CartModel } from "./cart.model.js";
 import MongoDao from "../mongo.dao.js";
-import { logger } from "../../../../utils/logger.js";
+import { logger } from "../../../../utils/logger/logger.js";
 
 export default class CartDaoMongoDB extends MongoDao {
     constructor() {
@@ -16,7 +16,7 @@ export default class CartDaoMongoDB extends MongoDao {
             const response = await CartModel.create(cart);
             return response;
         } catch (error) {
-            logger.error("Error en createCart", error);
+            logger.error("desde cart.dao.js - Error en createCart", error);
         }
     }
 
@@ -28,7 +28,7 @@ export default class CartDaoMongoDB extends MongoDao {
             });
             return response;
         } catch (error) {
-            logger.error("Error en getCartById", error);
+            logger.error("desde cart.dao.js - Error en getCartById", error);
         }
     }
 
@@ -45,7 +45,10 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            logger.error("Error en deleteProductFromCart", error);
+            logger.error(
+                "desde cart.dao.js - Error en deleteProductFromCart",
+                error
+            );
         }
     }
 
@@ -58,7 +61,7 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            logger.error("Error en updateCart", error);
+            logger.error("desde cart.dao.js - Error en updateCart", error);
         }
     }
 
@@ -75,7 +78,10 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response;
         } catch (error) {
-            logger.error("Error en updateProductQuantity", error);
+            logger.error(
+                "desde cart.dao.js - Error en updateProductQuantity",
+                error
+            );
         }
     }
 
@@ -88,7 +94,10 @@ export default class CartDaoMongoDB extends MongoDao {
             );
             return response || null;
         } catch (error) {
-            logger.error("Error en deleteAllProductsFromCart", error);
+            logger.error(
+                "desde cart.dao.js - Error en deleteAllProductsFromCart",
+                error
+            );
         }
     }
 }

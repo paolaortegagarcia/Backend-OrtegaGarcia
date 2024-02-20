@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 import config from "./config.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "../utils/logger/logger.js";
 
 let MONGO_URL = "";
 

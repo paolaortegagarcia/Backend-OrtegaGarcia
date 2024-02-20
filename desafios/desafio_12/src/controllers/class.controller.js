@@ -1,4 +1,7 @@
-import { createResponse } from "../utils/utils.js";
+import { HttpResponse } from "../utils/response/http.response.js";
+import { errorsDictionary } from "../utils/response/errors-dictionary.response.js";
+import { logger } from "../utils/logger/logger.js";
+const httpResponse = new HttpResponse();
 
 export default class Controllers {
     constructor(service) {
@@ -8,9 +11,11 @@ export default class Controllers {
     getAll = async (req, res, next) => {
         try {
             const items = await this.service.getAll();
-            createResponse(res, 200, items);
+            httpResponse.Ok(res, items);
         } catch (error) {
-            logger.error(`Error en getAll = ${error}`);
+            logger.error(
+                `desde class.controller.js - Error en getAll = ${error}`
+            );
             next(error.message);
         }
     };
@@ -20,13 +25,12 @@ export default class Controllers {
             const { id } = req.params;
             const item = await this.service.getById(id);
             if (!item)
-                createResponse(res, 404, {
-                    method: "getById",
-                    error: "Error - Item not found",
-                });
-            else createResponse(res, 200, item);
+                httpResponse.NotFound(res, errorsDictionary.ERROR_FETCH_ITEMS);
+            else httpResponse.Ok(res, item);
         } catch (error) {
-            logger.error(`Error en getById = ${error}`);
+            logger.error(
+                `desde class.controller.js - Error en getById = ${error}`
+            );
             next(error.message);
         }
     };
@@ -35,13 +39,16 @@ export default class Controllers {
         try {
             const newItem = await this.service.create(req.body);
             if (!newItem)
-                createResponse(res, 404, {
-                    method: "create",
-                    error: "Error - the item could not be created",
+                httpResponse.NotFound(res, errorsDictionary.ERROR_CREATE_ITEM);
+            else
+                httpResponse.Ok(res, {
+                    newItem,
+                    msg: `item created successfully`,
                 });
-            else createResponse(res, 200, newItem);
         } catch (error) {
-            logger.error(`Error en create = ${error}`);
+            logger.error(
+                `desde class.controller.js - Error en create = ${error}`
+            );
             next(error.message);
         }
     };
@@ -51,14 +58,16 @@ export default class Controllers {
             const { id } = req.params;
             const item = await this.service.getById(id);
             if (!item)
-                createResponse(res, 404, {
-                    method: "update",
-                    error: "Error - the item could not be updated",
-                });
+                httpResponse.NotFound(res, errorsDictionary.ERROR_UPDATE_ITEM);
             const itemUpd = await this.service.update(id, req.body);
-            createResponse(res, 200, itemUpd);
+            httpResponse.Ok(res, {
+                itemUpd,
+                msg: `ID ${id} updated successfully`,
+            });
         } catch (error) {
-            logger.error(`Error en update = ${error}`);
+            logger.error(
+                `desde class.controller.js - Error en update = ${error}`
+            );
             next(error.message);
         }
     };
@@ -68,17 +77,16 @@ export default class Controllers {
             const { id } = req.params;
             const item = await this.service.getById(id);
             if (!item)
-                createResponse(res, 404, {
-                    method: "delete",
-                    error: "Error - the item could not be deleted",
-                });
+                httpResponse.NotFound(res, errorsDictionary.ERROR_DELETE_ITEM);
             const itemUpd = await this.service.delete(id);
-            createResponse(res, 200, {
+            httpResponse.Ok(res, {
                 itemUpd,
-                msg: `Cart ID ${id} deleted successfully`,
+                msg: `ID ${id} deleted successfully`,
             });
         } catch (error) {
-            logger.error(`Error en delete = ${error}`);
+            logger.error(
+                `desde class.controller.js - Error en delete = ${error}`
+            );
             next(error.message);
         }
     };

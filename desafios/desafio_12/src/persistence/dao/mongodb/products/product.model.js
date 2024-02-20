@@ -10,6 +10,12 @@ export const productSchema = new Schema({
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
     category: { type: String, required: true, index: true },
+    owner: {
+        type: String,
+        ref: "users",
+        required: true,
+        default: "admin",
+    },
 });
 
 productSchema.plugin(mongoosePaginate);

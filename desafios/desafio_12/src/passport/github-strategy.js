@@ -1,6 +1,7 @@
 import { Strategy as GithubStrategy } from "passport-github2";
 import passport from "passport";
 import UserDaoMongoDB from "../persistence/dao/mongodb/users/user.dao.js";
+import { logger } from "../utils/logger/logger.js";
 import "dotenv/config";
 const userDao = new UserDaoMongoDB();
 
@@ -13,12 +14,12 @@ const strategyOptions = {
 
 const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
     try {
-        console.log("Perfil de GitHub:", profile);
+        logger.info("Perfil de GitHub:", profile);
 
         /* --------------------------------- Opcion1 -------------------------------- */
         const emailsArray = profile.emails;
         const email = emailsArray.length > 0 ? emailsArray[0].value : null;
-        console.log(email);
+        logger.info(email);
 
         /* --------------------------------- Opcion2 -------------------------------- */
         //const email = profile._json.email;
@@ -33,7 +34,7 @@ const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
         }
 
         const user = await userDao.findByEmail(email);
-        console.log(user);
+        logger.info(user);
         if (user) {
             return done(null, user);
         }
@@ -42,10 +43,10 @@ const registerOrLogin = async (accessToken, refreshToken, profile, done) => {
             first_name: profile._json.name,
             email,
         });
-        console.log("Usuario creado: ", newUser);
+        logger.info("Usuario creado: ", newUser);
         return done(null, newUser);
     } catch (error) {
-        console.error(error);
+        logger.error(error);
         //return done(error, null);
     }
 };

@@ -2,23 +2,25 @@ import express from "express";
 import morgan from "morgan";
 import handlebars from "express-handlebars";
 import session from "express-session";
-import { __dirname, mongoStoreOptions } from "./utils/utils.js";
+import { __dirname } from "./utils/utils.js";
+import { mongoStoreOptions } from "./utils/session/mongostore.options.js";
 import ApiRoutes from "./routes/index.routes/api.router.js";
 import renderRoutes from "./routes/index.routes/render.router.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
-import socketConfig from "./socket/socket.js";
 import "./passport/local-strategy.js";
 import passport from "passport";
 import "./passport/github-strategy.js";
 import "dotenv/config";
 import config from "./config/config.js";
 import cors from "cors";
+import helmet from "helmet";
 const apiRoutes = new ApiRoutes();
 
 /* --------------------------------- Express / Passport -------------------------------- */
 
 const app = express();
 app.use(cors({ credentials: true, origin: process.env.APP }));
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
@@ -52,7 +54,3 @@ const httpServer = app.listen(PORT, () =>
 /* ---------------------------------- Error Handler--------------------------------- */
 
 app.use(errorHandler);
-
-/* --------------------------------- Socket --------------------------------- */
-
-socketConfig(httpServer);

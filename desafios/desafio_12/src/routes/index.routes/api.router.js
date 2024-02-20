@@ -2,15 +2,11 @@
 import { Router } from "express";
 
 // Routers en detalle
-import productRouter from "../detail.routes/product.router.js";
-import cartRouter from "../detail.routes/cart.router.js";
-import chatRouter from "../detail.routes/chat.router.js";
-import userRouter from "../detail.routes/user.router.js";
-import noBloqueanteRouter from "../detail.routes/no-bloqueante.router.js";
-import emailRouter from "../detail.routes/email.router.js";
-import messageRouter from "../detail.routes/message.router.js";
-import ticketRouter from "../detail.routes/ticket.router.js";
-import loggerRouter from "../detail.routes/logger.router.js";
+import productRouter from "../detail.routes/products/product.router.js";
+import cartRouter from "../detail.routes/carts/cart.router.js";
+import userRouter from "../detail.routes/users/user.router.js";
+import emailRouter from "../detail.routes/users/email.router.js";
+import ticketRouter from "../detail.routes/carts/ticket.router.js";
 
 export default class ApiRoutes {
     constructor() {
@@ -21,13 +17,9 @@ export default class ApiRoutes {
     initRoutes() {
         this.router.use("/carts", cartRouter);
         this.router.use("/products", productRouter);
-        this.router.use("/chats", chatRouter);
         this.router.use("/users", userRouter);
-        this.router.use("/no-bloqueante", noBloqueanteRouter);
         this.router.use("/email", emailRouter);
-        this.router.use("/message", messageRouter);
         this.router.use("/ticket", ticketRouter);
-        this.router.use("/loggertest", loggerRouter);
     }
 
     getRouter() {

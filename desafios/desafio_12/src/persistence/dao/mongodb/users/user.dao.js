@@ -1,7 +1,9 @@
-import { createHash, isValidPass } from "../../../../utils/utils.js";
-import { logger } from "../../../../utils/logger.js";
+import { createHash } from "../../../../utils/bCrypt/register.bcrypt.js";
+import { isValidPass } from "../../../../utils/bCrypt/login.bcrypt.js";
+import { logger } from "../../../../utils/logger/logger.js";
 import MongoDao from "../mongo.dao.js";
 import { UserModel } from "./user.model.js";
+import { generateToken } from "../../../../jwt/auth.js";
 
 export default class UserDaoMongoDB extends MongoDao {
     constructor() {
@@ -9,7 +11,7 @@ export default class UserDaoMongoDB extends MongoDao {
     }
 
     async findByEmail(email) {
-        return await this.model.findOne({ email });
+        return await UserModel.findOne({ email });
     }
 
     async registerUser(user) {
@@ -28,9 +30,11 @@ export default class UserDaoMongoDB extends MongoDao {
             }
 
             const userExists = await this.findByEmail(email);
+            logger.info(`userexists ${userExists}`);
 
-            if (!userExists) {
+            if (!userExists || userExists === null) {
                 try {
+                    logger.info("entro al try");
                     const newUser = await UserModel.create({
                         ...user,
                         password: createHash(password),
@@ -39,14 +43,16 @@ export default class UserDaoMongoDB extends MongoDao {
                     logger.info("After UserModel.create");
                     return newUser;
                 } catch (error) {
-                    logger.error("Error en userExists", error);
+                    logger.error(
+                        `desde user.dao.js - Error en userExists ${error}`
+                    );
                     throw error;
                 }
             } else {
                 return false;
             }
         } catch (error) {
-            userExists;
+            logger.error(`desde user.dao.js - Error en registerUser ${error}`);
             throw error;
         }
     }
@@ -66,14 +72,17 @@ export default class UserDaoMongoDB extends MongoDao {
                 return false;
             }
         } catch (error) {
-            logger.error("Error en registerUserGithub", error);
+            logger.error(
+                "desde user.dao.js - Error en registerUserGithub",
+                error
+            );
             throw error;
         }
     }
 
     async loginUser(email, password) {
         try {
-            logger.info("entro en el login dao", email, password);
+            logger.debug(`entro en el login dao ${email},${password}`);
             //const { email, password } = user;
             const userExists = await this.findByEmail(email);
             logger.info(userExists);
@@ -82,7 +91,7 @@ export default class UserDaoMongoDB extends MongoDao {
                 return false;
             } else {
                 const isValidPassword = isValidPass(password, userExists);
-                logger.info("valid dao: ", isValidPassword);
+                logger.debug(`valid dao: ${isValidPassword}`);
                 if (!isValidPassword) {
                     return false;
                 } else {
@@ -90,7 +99,31 @@ export default class UserDaoMongoDB extends MongoDao {
                 }
             }
         } catch (error) {
-            logger.error("Error en loginUser", error);
+            logger.error(`desde user.dao.js - Error en loginUser ${error}`);
+        }
+    }
+
+    async resetPass(user) {
+        try {
+            const { email } = user;
+            const userExist = await this.findByEmail(email);
+            if (userExist) return generateToken(userExist, "1h");
+            else return false;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+    async updatePass(user, password) {
+        try {
+            logger.debug(`desde dao ${password}`);
+            const isEqual = isValidPass(password, user);
+            logger.debug(`desde dao ${isEqual}`);
+            if (isEqual) return false;
+            const newPass = createHash(password);
+            return await this.update(user._id, { password: newPass });
+        } catch (error) {
+            throw new Error(error.message);
         }
     }
 }

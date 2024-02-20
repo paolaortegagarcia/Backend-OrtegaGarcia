@@ -1,17 +1,17 @@
-import { logger } from "../utils/logger.js";
+import { logger } from "../utils/logger/logger.js";
 
 export default class Services {
     constructor(dao) {
         this.dao = dao;
     }
 
-    getAll = async () => {
+    async getAll() {
         try {
             return this.dao.getAll();
         } catch (error) {
-            logger.error(`Error en getAll = ${error}`);
+            logger.error(`desde class.service.js - Error en getAll = ${error}`);
         }
-    };
+    }
 
     getById = async (id) => {
         try {
@@ -19,7 +19,9 @@ export default class Services {
             if (!item) return false;
             else return item;
         } catch (error) {
-            logger.error(`Error en getById = ${error}`);
+            logger.error(
+                `desde class.service.js - Error en getById = ${error}`
+            );
         }
     };
 
@@ -29,7 +31,7 @@ export default class Services {
             if (!newItem) return false;
             else return newItem;
         } catch (error) {
-            logger.error(`Error en create = ${error}`);
+            logger.error(`desde class.service.js - Error en create = ${error}`);
         }
     };
 
@@ -39,7 +41,7 @@ export default class Services {
             if (!item) return false;
             else return await this.dao.update(id, obj);
         } catch (error) {
-            logger.error(`Error en update = ${error}`);
+            logger.error(`desde class.service.js - Error en update = ${error}`);
         }
     };
 
@@ -47,7 +49,7 @@ export default class Services {
         try {
             return await this.dao.delete(id);
         } catch (error) {
-            logger.error(`Error en delete = ${error}`);
+            logger.error(`desde class.service.js - Error en delete = ${error}`);
         }
     };
 }

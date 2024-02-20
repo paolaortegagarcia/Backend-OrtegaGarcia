@@ -21,9 +21,7 @@ export const userSchema = new Schema({
     password: {
         type: String,
     },
-    cart: {
-        type: String,
-    },
+    cart: { type: Schema.Types.ObjectId, ref: "carts" },
     role: {
         type: String,
         default: "user",
@@ -32,6 +30,10 @@ export const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+});
+
+userSchema.pre("find", function () {
+    this.populate("cart");
 });
 
 export const UserModel = model(userCollection, userSchema);

@@ -1,13 +1,11 @@
 import Controllers from "./class.controller.js";
-import ProductService from "../services/product.service.js";
-import ChatService from "../services/chat.service.js";
-import { logger } from "../utils/logger.js";
+import ProductService from "../services/products/product.service.js";
+import { logger } from "../utils/logger/logger.js";
 const productService = new ProductService();
-const chatService = new ChatService();
 
 export default class ViewController extends Controllers {
     constructor() {
-        super(productService, chatService);
+        super(productService);
     }
 
     async renderHome(req, res, next) {
@@ -45,16 +43,6 @@ export default class ViewController extends Controllers {
             res.render("realTimeProducts", { products });
         } catch (error) {
             logger.error("Error en renderRealTimeProducts", error);
-            next(error.message);
-        }
-    }
-
-    async renderChat(req, res, next) {
-        try {
-            const messages = await chatService.getAll();
-            res.render("chat", { messages });
-        } catch (error) {
-            logger.error(`Error en renderChat = ${error}`);
             next(error.message);
         }
     }

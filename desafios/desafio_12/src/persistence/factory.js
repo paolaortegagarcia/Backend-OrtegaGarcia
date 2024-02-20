@@ -1,21 +1,18 @@
 import config from "../config/config.js";
-import { logger } from "../utils/logger.js";
+import { logger } from "../utils/logger/logger.js";
 /* ---------------------------------- Mongo --------------------------------- */
 import { initMongoDB } from "../config/connection.js";
 import UserDaoMongoDB from "./dao/mongodb/users/user.dao.js";
 import ProductDaoMongoDB from "./dao/mongodb/products/product.dao.js";
 import CartDaoMongoDB from "./dao/mongodb/carts/cart.dao.js";
-import ChatDaoMongoDB from "./dao/mongodb/chats/chat.dao.js";
 import TicketDaoMongoDB from "./dao/mongodb/tickets/ticket.dao.js";
 
 /* ----------------------------------- FS ----------------------------------- */
 import CartDaoFS from "./dao/filesystem/cart.dao.js";
-import ChatDaoFS from "./dao/filesystem/chat.dao.js";
 import ProductDaoFS from "./dao/filesystem/product.dao.js";
 
 let userDao;
 let prodDao;
-let chatDao;
 let cartDao;
 let ticketDao;
 
@@ -30,16 +27,12 @@ switch (persistence) {
         cartDao = new CartDaoFS(
             "./src/persistence/dao/filesystem/db/carts.json"
         );
-        chatDao = new ChatDaoFS(
-            "./src/persistence/dao/filesystem/db/chats.json"
-        );
         logger.info(`desde factory.js = ${persistence}`);
         break;
     case "MONGO":
         initMongoDB.getInstance(); // patron singleton
         prodDao = new ProductDaoMongoDB();
         cartDao = new CartDaoMongoDB();
-        chatDao = new ChatDaoMongoDB();
         userDao = new UserDaoMongoDB();
         ticketDao = new TicketDaoMongoDB();
         logger.info(`desde factory.js = ${persistence}`);
@@ -51,11 +44,8 @@ switch (persistence) {
         cartDao = new CartDaoFS(
             "./src/persistence/dao/filesystem/db/carts.json"
         );
-        chatDao = new ChatDaoFS(
-            "./src/persistence/dao/filesystem/db/chats.json"
-        );
         logger.info(`desde factory.js = ${persistence}`);
         break;
 }
 
-export default { userDao, chatDao, prodDao, cartDao, ticketDao };
+export default { userDao, prodDao, cartDao, ticketDao };

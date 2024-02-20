@@ -7,7 +7,6 @@ const router = Router();
 
 router.get("/", controller.renderHome);
 router.get("/realtimeproducts", controller.renderRealTimeProducts);
-router.get("/chat", controller.renderChat);
 router.get("/login", controller.renderLogInForm);
 router.get("/register", controller.renderRegisterForm);
 router.get("/profile", controller.renderUserProfile);

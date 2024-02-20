@@ -1,4 +1,4 @@
-import { logger } from "../../../utils/logger.js";
+import { logger } from "../../../utils/logger/logger.js";
 
 export default class MongoDao {
     constructor(model) {
@@ -10,16 +10,17 @@ export default class MongoDao {
             const response = await this.model.find({});
             return response;
         } catch (error) {
-            logger.error("Error en getAll", error);
+            logger.error("desde mongo.dao.js - Error en getAll", error);
         }
     }
 
     async getById(id) {
         try {
+            logger.debug(`desde mongo.dao.js - ${id}`);
             const response = await this.model.findById(id);
             return response;
         } catch (error) {
-            logger.error("Error en getById", error);
+            logger.error("desde mongo.dao.js - Error en getById", error);
         }
     }
 
@@ -28,7 +29,7 @@ export default class MongoDao {
             const response = await this.model.create(obj);
             return response;
         } catch (error) {
-            logger.error("Error en create", error);
+            logger.error("desde mongo.dao.js - Error en create", error);
         }
     }
 
@@ -39,7 +40,7 @@ export default class MongoDao {
             });
             return response;
         } catch (error) {
-            logger.error("Error en update", error);
+            logger.error("desde mongo.dao.js - Error en update", error);
         }
     }
 
@@ -48,7 +49,7 @@ export default class MongoDao {
             const response = await this.model.findByIdAndDelete(id);
             return response;
         } catch (error) {
-            logger.error("Error en delete", error);
+            logger.error("desde mongo.dao.js - Error en delete", error);
         }
     }
 }
