@@ -1,4 +1,5 @@
 paths:
+    ## productos
     /api/products:
         post:
             tags:
@@ -134,6 +135,46 @@ paths:
                                 $ref: "#/components/schema/Products/GetByIdError"
             security:
                 - BearerAuth: []
+    /api/products/add/{cartid}/{productid}:
+        post:
+            tags:
+                - Products
+            summary: Agregar producto al carrito
+            parameters:
+                - in: path
+                  name: cartid
+                  required: true
+                  description: ID del carrito
+                  schema:
+                      type: string
+                - in: path
+                  name: productid
+                  required: true
+                  description: ID del producto
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Se agrego el producto correctamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Products/AddToCart"
+                404:
+                    description: Error en agregar el producto
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Products/NotFound"
+                500:
+                    description: Error en validacion del body
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Products/ValidationSchemaError"
+            security:
+                - BearerAuth: []
+    ## login
     /api/users/login:
         post:
             tags:
@@ -152,6 +193,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schema/Users/User"
+    ## carritos
     /api/carts:
         post:
             tags:
@@ -291,6 +333,69 @@ paths:
             responses:
                 200:
                     description: Se borro el carrito correctamente
+                404:
+                    description: Error al buscar el carrito
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Carts/GetByIdError"
+    /api/carts/{cartid}/products/{productid}:
+        put:
+            tags:
+                - Carts
+            summary: Editar carrito
+            parameters:
+                - in: path
+                  name: cartid
+                  required: true
+                  description: ID del carrito
+                  schema:
+                      type: string
+                - in: path
+                  name: productid
+                  required: true
+                  description: ID del producto
+                  schema:
+                      type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/parameters/schemas/carts"
+                required: true
+            responses:
+                200:
+                    description: Se actualizo el carrito correctamente
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Carts/UpdateCarts"
+                404:
+                    description: Error al buscar el producto
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schema/Carts/GetByIdError"
+        delete:
+            tags:
+                - Carts
+            summary: Borrar producto del carrito
+            parameters:
+                - in: path
+                  name: cartid
+                  required: true
+                  description: ID del carrito
+                  schema:
+                      type: string
+                - in: path
+                  name: productid
+                  required: true
+                  description: ID del producto
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Se borro el producto correctamente
                 404:
                     description: Error al buscar el carrito
                     content:

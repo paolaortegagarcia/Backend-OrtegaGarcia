@@ -25,6 +25,14 @@ components:
                     description: Anillo básico de acero quirúrgico
                     price: 100
                     stock: 70
+            AddToCart:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        description: ID del carrito
+                    products:
+                        type: array
             GetAllProducts:
                 type: array
                 items:
@@ -87,6 +95,14 @@ components:
                     data: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGU1MzZhZjU5ZGM3ZDcwZTczZDhjYWMiLCJpYXQiOjE2OTMzOTMzODIsImV4cCI6MTY5MzM5NDI4Mn0.3t3rqyv_3CPzd6yNnJgPvifmw2IBvY0Il7eqc4Zgh_w
         Carts:
             Create:
+                type: object
+                properties:
+                    id:
+                        type: string
+                        description: ID del carrito
+                    products:
+                        type: array
+            UpdateCart:
                 type: object
                 properties:
                     id:

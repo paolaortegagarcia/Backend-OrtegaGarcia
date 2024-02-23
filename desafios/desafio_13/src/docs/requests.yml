@@ -49,8 +49,8 @@ components:
                         type: string
                         description: Password del usuario
                 example:
-                    email: pao.ortega.95@gmail.com
-                    password: "123456789"
+                    email: premiumCoder@coder.com
+                    password: "premium123"
             carts:
                 type: object
                 properties:
