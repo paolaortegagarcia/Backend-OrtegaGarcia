@@ -52,4 +52,18 @@ export class initMongoDB {
             );
         }
     }
+
+    static async dropCartsCollection() {
+        if (config.NODE_ENV === "test") {
+            await connect(config.ATLAS_MONGO_TEST_URL);
+            await mongoose.connection.collections["carts"].drop();
+            logger.info(
+                "Colección 'carts' eliminada en la base de datos de pruebas."
+            );
+        } else {
+            logger.info(
+                "No es un entorno de prueba. No se eliminó ninguna colección."
+            );
+        }
+    }
 }

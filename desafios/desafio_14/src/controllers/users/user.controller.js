@@ -13,6 +13,7 @@ export default class UserController extends Controllers {
 
     async register(req, res, next) {
         try {
+            logger.info("entro al controller register");
             const { email } = req.body;
             logger.info(email);
             const user = await userService.findByEmail(email);

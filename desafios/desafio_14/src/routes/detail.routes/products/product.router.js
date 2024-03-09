@@ -26,7 +26,7 @@ router.get("/all", controller.getAll); // sin queries
 
 router.post(
     "/add/:cartId/:productId",
-    premiumCannotAddOwnProduct,
+    /* premiumCannotAddOwnProduct, */
     controller.addProductToCart
 );
 

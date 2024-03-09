@@ -11,7 +11,7 @@ const router = Router();
 
 router.post("/register", validateRegister, controller.register);
 router.post("/login", passport.authenticate("loginStrategy"), controller.login);
-router.get("/private", verifyToken, controller.getUserById); //usando DTO y JWT
+router.get("/private", /* verifyToken, */ controller.getUserById); //usando DTO y JWT
 
 router.post("/logout", controller.logout);
 router.get("/authenticationError", controller.renderAuthenticationError);

@@ -34,7 +34,7 @@ export default class UserService extends Services {
             if (!response) {
                 return false;
             } else {
-                await sendMail(user, "register");
+                //await sendMail(user, "register");
                 return response;
             }
         } catch (error) {
